@@ -1,8 +1,8 @@
 #pragma once
 #include <d3d.h>
-#include "../Rendering/Window/GameWindow.h"
-#include "../Rendering/Window/Components/RenderView.h"
-#include "../Rendering/Window/Components/DebugWindowText.h"
+#include "Window/GameWindow.h"
+#include "Window/Components/RenderView.h"
+#include "Window/Components/DebugWindowText.h"
 class GameHandle {
 public:
 	GameHandle(LPCWSTR windowName, int width, int height);

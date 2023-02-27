@@ -127,29 +127,50 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Rendering\Window\Components\DebugWindowText.cpp" />
+    <ClCompile Include="Game\3rdParty\InputStuff\Delegates.cpp" />
+    <ClCompile Include="Game\3rdParty\InputStuff\InputDevice.cpp" />
+    <ClCompile Include="Game\3rdParty\SimpleMath.cpp" />
+    <ClCompile Include="Game\Components\MeshRenderer.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Game\Window\Components\DebugWindowText.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\GameHandle.cpp" />
-    <ClCompile Include="Rendering\Window\GameWindow.cpp" />
+    <ClCompile Include="Game\Window\GameWindow.cpp" />
     <ClCompile Include="MySuper3DApp.cpp" />
-    <ClCompile Include="Rendering\Graphics\Shader.cpp" />
-    <ClCompile Include="Rendering\Window\Components\RenderView.cpp" />
+    <ClCompile Include="Game\Graphics\Shader.cpp" />
+    <ClCompile Include="Game\Window\Components\RenderView.cpp" />
+    <ClCompile Include="Game\Components\ObjectComponent.cpp" />
+    <ClCompile Include="Game\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\3rdParty\SimpleMath.inl" />
     <None Include="Shaders\MyVeryFirstShader.hlsl">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Rendering\Graphics\Mesh.h" />
-    <ClInclude Include="Rendering\Graphics\RenderObject.h" />
-    <ClInclude Include="Rendering\Window\Components\DebugWindowText.h" />
+    <ClInclude Include="Game\3rdParty\InputStuff\Delegates.h" />
+    <ClInclude Include="Game\3rdParty\InputStuff\InputDevice.h" />
+    <ClInclude Include="Game\3rdParty\InputStuff\Keys.h" />
+    <ClInclude Include="Game\3rdParty\pch.h" />
+    <ClInclude Include="Game\3rdParty\SimpleMath.h" />
+    <ClInclude Include="Game\Components\MeshRenderer.h" />
+    <ClInclude Include="Game\GameObject.h" />
+    <ClInclude Include="Game\Graphics\DefaultMesh\DefaultRectangle.h" />
+    <ClInclude Include="Game\Graphics\Mesh.h" />
+    <ClInclude Include="Game\Graphics\RenderObject.h" />
+    <ClInclude Include="Game\Window\Components\DebugWindowText.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\GameHandle.h" />
-    <ClInclude Include="Rendering\Window\Components\GameWindowComponent.h" />
-    <ClInclude Include="Rendering\Window\GameWindow.h" />
-    <ClInclude Include="Rendering\Graphics\Shader.h" />
-    <ClInclude Include="Rendering\Window\Components\RenderView.h" />
+    <ClInclude Include="Game\Window\Components\GameWindowComponent.h" />
+    <ClInclude Include="Game\Window\GameWindow.h" />
+    <ClInclude Include="Game\Graphics\Shader.h" />
+    <ClInclude Include="Game\Window\Components\RenderView.h" />
+    <ClInclude Include="Game\Components\ObjectComponent.h" />
+    <ClInclude Include="Game\Transform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Game\3rdParty\InputStuff\Delegates.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

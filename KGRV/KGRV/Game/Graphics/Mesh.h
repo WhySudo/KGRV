@@ -5,7 +5,7 @@
 class Mesh {
 public:
 	Mesh(DirectX::XMFLOAT4* points,	int pointCount, int* indeces, int indecesCount) {
-		//TODO: MEMORY
+		//TODO: DEPRECATED
 		this->pointCount = pointCount;
 		this->indecesCount = indecesCount;
 		this->points = new DirectX::XMFLOAT4[pointCount];
@@ -14,17 +14,26 @@ public:
 
 		memcpy(this->points, points, sizeof(DirectX::XMFLOAT4) * pointCount);
 		memcpy(this->indeces, indeces, sizeof(int) * pointCount);
+		InitalizeMesh();
+	}
+	Mesh() {
+	}
+	DirectX::XMFLOAT4* points = nullptr;
+	int* indeces = nullptr;
+	int pointCount;
+	int indecesCount;
+	D3D11_BUFFER_DESC vertexBufDesc;
+	D3D11_SUBRESOURCE_DATA vertexData;
+	D3D11_BUFFER_DESC indexBufDesc;
+	D3D11_SUBRESOURCE_DATA indexData;
+	
 
+	void InitalizeMesh() {
 		vertexBufDesc = {};
 		vertexData = {};
 		indexBufDesc = {};
 		indexData = {};
 
-		this->pointCount = pointCount;
-		this->points = points;
-		this->indeces = indeces;
-		this->indecesCount = indecesCount;
-	
 		vertexBufDesc.Usage = D3D11_USAGE_DEFAULT;
 		vertexBufDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vertexBufDesc.CPUAccessFlags = 0;
@@ -47,17 +56,12 @@ public:
 		indexData.SysMemPitch = 0;
 		indexData.SysMemSlicePitch = 0;
 	}
-	DirectX::XMFLOAT4* points;
-	int* indeces;
-	int pointCount;
-	int indecesCount;
-	D3D11_BUFFER_DESC vertexBufDesc;
-	D3D11_SUBRESOURCE_DATA vertexData;
-	D3D11_BUFFER_DESC indexBufDesc;
-	D3D11_SUBRESOURCE_DATA indexData;
-	
 	~Mesh() {
-		delete points;
-		delete indeces;
+		if (points != nullptr) {
+			delete points;
+		}
+		if (indeces != nullptr) {
+			delete indeces;
+		}
 	}
 };

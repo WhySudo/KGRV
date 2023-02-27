@@ -1,0 +1,30 @@
+#pragma once
+#include <vector>
+
+#include "Transform.h"
+#include "Components/ObjectComponent.h"
+#include "3rdParty/SimpleMath.h"
+#include "GameHandle.h"
+
+using namespace DirectX::SimpleMath;
+class ObjectComponent;
+class GameHandle;
+class GameObject {
+
+public:
+	Transform* transform;
+	void Draw();
+	void Update(float timeDeltaTime);
+	GameObject(GameHandle* game) {
+		transform = new Transform();
+		gameHandle = game;
+	}
+	~GameObject() {
+		delete transform;
+	}
+protected:
+	std::vector<ObjectComponent*> gameComponents;
+	GameHandle* gameHandle;
+private:
+
+};
