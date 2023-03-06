@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "../Mesh.h"
 class DefaultBall : public Mesh {
 public:

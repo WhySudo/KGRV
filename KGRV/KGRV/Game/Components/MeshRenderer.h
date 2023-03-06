@@ -12,7 +12,9 @@ public:
 		this->drawShader = drawShader;
 	}
 private:
+	void UpdateDrawMatrix();
 	void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView);
+
 	Mesh* renderedMesh;
 	Shader* drawShader;
 	ID3D11Buffer* vertexBuffer;

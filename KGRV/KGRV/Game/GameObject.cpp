@@ -9,6 +9,7 @@ void GameObject::Draw()
 
 void GameObject::Update(float timeDeltaTime)
 {
+	transform->UpdateValues();
 	for (auto component : gameComponents) {
 		component->Update(timeDeltaTime);
 	}

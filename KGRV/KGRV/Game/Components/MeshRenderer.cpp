@@ -1,4 +1,5 @@
 #include "MeshRenderer.h"
+#include "CameraComponent.h"
 #include <iostream>
 void MeshRenderer::Draw()
 {
@@ -7,16 +8,24 @@ void MeshRenderer::Draw()
 
 void MeshRenderer::Update(float deltaTime)
 {
-	
+	UpdateDrawMatrix();
+}
+
+void MeshRenderer::UpdateDrawMatrix() {
 	TransformConstantBuffer data;
-	data.matrix = DirectX::XMMatrixScaling(gameObject->transform->scale.x, gameObject->transform->scale.y, gameObject->transform->scale.z) * 
-		DirectX::XMMatrixTranslation(gameObject->transform->position.x, gameObject->transform->position.y, gameObject->transform->position.z);
+	auto camera = gameObject->gameHandle->loadedScene->currentCamera;
+	if (camera == nullptr)
+		return;
+	DirectX::XMMATRIX modelMatrix = gameObject->transform->GlobalPosMatrix();
+	
+	//data.matrix = DirectX::XMMatrixScaling(gameObject->transform->scale.x, gameObject->transform->scale.y, gameObject->transform->scale.z) *
+	//DirectX::XMMatrixTranslation(gameObject->transform->position.x, gameObject->transform->position.y, gameObject->transform->position.z);
+	data.matrix = modelMatrix * camera->ViewMatrix() * camera->ProjectionMatrix();
 	data.matrix = DirectX::XMMatrixTranspose(data.matrix);
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT hr = gameObject->gameHandle->renderView->context->Map(transformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	HRESULT result = gameObject->gameHandle->renderView->context->Map(transformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	CopyMemory(mappedResource.pData, &data, sizeof(TransformConstantBuffer));
 	gameObject->gameHandle->renderView->context->Unmap(transformBuffer, 0);
-
 }
 
 ID3D11Buffer* MeshRenderer::CreateTransformBuffer(ID3D11Device* device) {
@@ -54,6 +63,8 @@ bool MeshRenderer::Initialization()
 }
 void MeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView)
 {
+
+
 	UINT strides[] = { 32 };
 	UINT offsets[] = { 0 };
 	context->IASetInputLayout(drawShader->layout);
