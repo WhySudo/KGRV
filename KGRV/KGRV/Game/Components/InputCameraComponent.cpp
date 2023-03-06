@@ -36,6 +36,12 @@ void InputCameraComponent::Update(float deltaTime)
 		gameObject->transform->rotation.y += moveRot.x;
 		gameObject->transform->rotation.z = 0;
 	}
+	if (gameObject->gameHandle->gameWindow->inputDevice->IsKeyDown(Keys::O)) {
+
+	}
+	if (gameObject->gameHandle->gameWindow->inputDevice->IsKeyDown(Keys::P)) {
+
+	}
 }
 
 bool InputCameraComponent::Initialization()

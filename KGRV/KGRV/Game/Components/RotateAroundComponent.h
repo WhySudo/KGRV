@@ -3,9 +3,10 @@
 class RotateAroundComponent : public ObjectComponent
 {
 public:
-	RotateAroundComponent(GameObject* object, GameObject* targetObject, XMFLOAT3 rotAxis, float speed) : ObjectComponent(object) {
+	RotateAroundComponent(GameObject* object, GameObject* targetObject, Vector3 rotAxis, Vector3 rotVector, float speed) : ObjectComponent(object) {
 		this->targetObject = targetObject;
 		this->rotAxis = rotAxis;
+		this->rotVector = rotVector;
 		this->speed = speed;
 	}
 	// Унаследовано через ObjectComponent
@@ -13,7 +14,8 @@ public:
 	virtual bool Initialization() override;
 	GameObject* targetObject;
 protected:
-	XMFLOAT3 rotAxis;
+	Vector3 rotAxis;
+	Vector3 rotVector;
 	float speed;
 	float storedRotation = 0;
 };

@@ -57,6 +57,8 @@ bool MeshRenderer::Initialization()
 	ID3D11Device* device = gameObject->gameHandle->renderView->device.Get();
 	device->CreateBuffer(&renderedMesh->vertexBufDesc, &renderedMesh->vertexData, &vertexBuffer);
 	device->CreateBuffer(&renderedMesh->indexBufDesc, &renderedMesh->indexData, &indexBuffer);
+
+	//device->CreateDepthStencilState(&dsDesc, &pDSState);
 	transformBuffer = CreateTransformBuffer(device);
 	drawShader->Initalize(device);
 	return true;

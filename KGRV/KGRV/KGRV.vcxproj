@@ -127,10 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Components\CameraPointsAttachment.cpp" />
     <ClCompile Include="Game\3rdParty\Input\Delegates.cpp" />
     <ClCompile Include="Game\3rdParty\Input\InputDevice.cpp" />
     <ClCompile Include="Game\3rdParty\SimpleMath.cpp" />
+    <ClCompile Include="Game\Components\CameraComponent.cpp" />
+    <ClCompile Include="Game\Components\InputCameraComponent.cpp" />
     <ClCompile Include="Game\Components\MeshRenderer.cpp" />
+    <ClCompile Include="Game\Components\ObjectRotator.cpp" />
+    <ClCompile Include="Game\Components\RotateAroundComponent.cpp" />
     <ClCompile Include="Game\DefaultObjects\SimplePlayerPlatform.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\Window\Components\DebugWindowText.cpp" />
@@ -160,17 +165,27 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Components\CameraPointsAttachment.h" />
     <ClInclude Include="Game\3rdParty\Input\Delegates.h" />
     <ClInclude Include="Game\3rdParty\Input\InputDevice.h" />
     <ClInclude Include="Game\3rdParty\Input\Keys.h" />
     <ClInclude Include="Game\3rdParty\pch.h" />
     <ClInclude Include="Game\3rdParty\SimpleMath.h" />
+    <ClInclude Include="Game\Components\CameraComponent.h" />
+    <ClInclude Include="Game\Components\InputCameraComponent.h" />
     <ClInclude Include="Game\Components\MeshRenderer.h" />
+    <ClInclude Include="Game\Components\ObjectRotator.h" />
+    <ClInclude Include="Game\Components\RotateAroundComponent.h" />
     <ClInclude Include="Game\Components\RoundWall.h" />
+    <ClInclude Include="Game\DefaultObjects\BaseCameraObject.h" />
+    <ClInclude Include="Game\DefaultObjects\EmptyRotatingPoint.h" />
+    <ClInclude Include="Game\DefaultObjects\SimpleCubeObject.h" />
     <ClInclude Include="Game\DefaultObjects\SimplePlayerPlatform.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\Graphics\DefaultMesh\DefaultBall.h" />
+    <ClInclude Include="Game\Graphics\DefaultMesh\DefaultCube.h" />
     <ClInclude Include="Game\Graphics\DefaultMesh\DefaultRectangle.h" />
+    <ClInclude Include="Game\Graphics\DefaultMesh\DefaultSphere.h" />
     <ClInclude Include="Game\Graphics\Mesh.h" />
     <ClInclude Include="Game\Graphics\RenderObject.h" />
     <ClInclude Include="Game\Window\Components\DebugWindowText.h" />

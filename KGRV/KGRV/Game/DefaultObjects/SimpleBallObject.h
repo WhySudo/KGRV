@@ -25,6 +25,7 @@ private:
 	DefaultBall* rectangleMesh;
 	Shader* shader;
 	MeshRenderer* rendererComponent;
+public:
 	MovingBallComponent* movingComponent;
 };
 
