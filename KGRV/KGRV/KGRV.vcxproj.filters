@@ -48,13 +48,34 @@
     <ClCompile Include="Game\3rdParty\SimpleMath.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Game\3rdParty\InputStuff\Delegates.cpp">
+    <ClCompile Include="Game\3rdParty\Input\Delegates.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Game\3rdParty\InputStuff\InputDevice.cpp">
+    <ClCompile Include="Game\3rdParty\Input\InputDevice.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Game\Components\MeshRenderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Scene.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\DefaultObjects\SimpleBallObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\MovingBallComponent.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\WallComponent.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\DefaultObjects\SimpleWallObject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\MovingPlatform.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\DefaultObjects\SimplePlayerPlatform.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,13 +130,13 @@
     <ClInclude Include="Game\3rdParty\SimpleMath.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Game\3rdParty\InputStuff\Delegates.h">
+    <ClInclude Include="Game\3rdParty\Input\Delegates.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Game\3rdParty\InputStuff\InputDevice.h">
+    <ClInclude Include="Game\3rdParty\Input\InputDevice.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Game\3rdParty\InputStuff\Keys.h">
+    <ClInclude Include="Game\3rdParty\Input\Keys.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Game\Components\MeshRenderer.h">
@@ -124,8 +145,35 @@
     <ClInclude Include="Game\Graphics\DefaultMesh\DefaultRectangle.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Scene.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\SimpleBallObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\MovingBallComponent.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\WallComponent.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\SimpleWallObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Graphics\DefaultMesh\DefaultBall.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\MovingPlatform.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\SimplePlayerPlatform.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\RoundWall.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="Game\3rdParty\InputStuff\Delegates.natvis" />
+    <Natvis Include="Game\3rdParty\Input\Delegates.natvis" />
   </ItemGroup>
 </Project>

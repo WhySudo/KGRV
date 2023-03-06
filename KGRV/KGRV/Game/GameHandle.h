@@ -3,6 +3,10 @@
 #include "Window/GameWindow.h"
 #include "Window/Components/RenderView.h"
 #include "Window/Components/DebugWindowText.h"
+#include "Scene.h"
+#include "3rdParty/Input/InputDevice.h"
+class RenderView;
+class Scene;
 class GameHandle {
 public:
 	GameHandle(LPCWSTR windowName, int width, int height);
@@ -13,5 +17,7 @@ public:
 	HRESULT InitializeGame();
 	void ProcessGameUpdates();
 	void CleanUp();
+	Scene* loadedScene;
+	InputDevice* inputDevice;
 };
 

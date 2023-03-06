@@ -7,7 +7,9 @@ class ObjectComponent
 public:
 	GameObject* gameObject;
 	ObjectComponent(GameObject* gameObject);
-	virtual void Draw() = 0;
+	virtual void Draw() {
+
+	}
 	virtual void Update(float deltaTime) = 0;
 	bool Initialize() {
 		isInitialized = Initialization();

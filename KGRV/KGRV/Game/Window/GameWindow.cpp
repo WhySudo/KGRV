@@ -5,25 +5,166 @@
 #include "GameWindow.h"
 
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
+LRESULT CALLBACK GameWindow::WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 {
+	GameWindow* pThis;
+
+	if (umessage == WM_NCCREATE)
+	{
+		pThis = static_cast<GameWindow*>(reinterpret_cast<CREATESTRUCT*>(lparam)->lpCreateParams);
+
+		SetLastError(0);
+		if (!SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis)))
+		{
+			if (GetLastError() != 0)
+				return FALSE;
+		}
+	}
+	else
+	{
+		pThis = reinterpret_cast<GameWindow*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+	}
+
+	if (!pThis)
+	{
+		return DefWindowProc(hwnd, umessage, wparam, lparam);
+		// use pThis->member as needed...
+	}
+
+
 	switch (umessage)
 	{
 	case WM_KEYDOWN:
 	{
-		// If a key is pressed send it to the input object so it can record that state.
-		std::cout << "Key: " << static_cast<unsigned int>(wparam) << std::endl;
 
 		if (static_cast<unsigned int>(wparam) == 27) PostQuitMessage(0);
 		return 0;
 	}
+	case WM_INPUT:
+	{
+		UINT dwSize = 0;
+		GetRawInputData(reinterpret_cast<HRAWINPUT>(lparam), RID_INPUT, nullptr, &dwSize, sizeof(RAWINPUTHEADER));
+		LPBYTE lpb = new BYTE[dwSize];
+		if (lpb == nullptr) {
+			return 0;
+		}
+
+		if (GetRawInputData((HRAWINPUT)lparam, RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER)) != dwSize)
+			OutputDebugString(TEXT("GetRawInputData does not return correct size !\n"));
+
+		RAWINPUT* raw = reinterpret_cast<RAWINPUT*>(lpb);
+
+		if (raw->header.dwType == RIM_TYPEKEYBOARD)
+		{
+			//printf(" Kbd: make=%04i Flags:%04i Reserved:%04i ExtraInformation:%08i, msg=%04i VK=%i \n",
+			//	raw->data.keyboard.MakeCode,
+			//	raw->data.keyboard.Flags,
+			//	raw->data.keyboard.Reserved,
+			//	raw->data.keyboard.ExtraInformation,
+			//	raw->data.keyboard.Message,
+			//	raw->data.keyboard.VKey);
+
+			
+			pThis->inputDevice->OnKeyDown({
+				raw->data.keyboard.MakeCode,
+				raw->data.keyboard.Flags,
+				raw->data.keyboard.VKey,
+				raw->data.keyboard.Message
+				});
+		}
+		else if (raw->header.dwType == RIM_TYPEMOUSE)
+		{
+			//printf(" Mouse: X=%04d Y:%04d \n", raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+			pThis->inputDevice->OnMouseMove({
+				raw->data.mouse.usFlags,
+				raw->data.mouse.usButtonFlags,
+				static_cast<int>(raw->data.mouse.ulExtraInformation),
+				static_cast<int>(raw->data.mouse.ulRawButtons),
+				static_cast<short>(raw->data.mouse.usButtonData),
+				raw->data.mouse.lLastX,
+				raw->data.mouse.lLastY
+				});
+		}
+
+		delete[] lpb;
+		return DefWindowProc(hwnd, umessage, wparam, lparam);
+	}
+
+
+
+	//Mouse Messages
+	/*case WM_MOUSEMOVE:
+	{
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		Mouse.OnMouseMove(x, y);
+		return 0;
+	}
+	case WM_LBUTTONDOWN:
+	{
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		Mouse.OnLeftPressed(x, y);
+		return 0;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		Mouse.OnRightPressed(x, y);
+		return 0;
+	}
+	case WM_MBUTTONDOWN:
+	{
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		Mouse.OnMiddlePressed(x, y);
+		return 0;
+	}
+	case WM_LBUTTONUP:
+	{
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		Mouse.OnLeftReleased(x, y);
+		return 0;
+	}
+	case WM_RBUTTONUP:
+	{
+
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		Mouse.OnRightReleased(x, y);
+		return 0;
+	}
+	case WM_MBUTTONUP:
+	{
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		Mouse.OnMiddleReleased(x, y);
+		return 0;
+	}
+	case WM_MOUSEWHEEL:
+	{
+		int x = LOWORD(lparam);
+		int y = HIWORD(lparam);
+		if (GET_WHEEL_DELTA_WPARAM(wparam) > 0)
+		{
+			Mouse.OnWheelUp(x, y);
+		}
+		else if (GET_WHEEL_DELTA_WPARAM(wparam) < 0)
+		{
+			Mouse.OnWheelDown(x, y);
+		}
+		return 0;
+	}*/
+
 	default:
 	{
 		return DefWindowProc(hwnd, umessage, wparam, lparam);
 	}
 	}
 }
-GameWindow::GameWindow(LPCWSTR windowName, int width, int height) {
+GameWindow::GameWindow(LPCWSTR windowName, int width, int height){
 	this->height = height;
 	this->width = width;
 	windowInstance = CreateGameWindow(windowName);
@@ -65,7 +206,7 @@ HWND GameWindow::CreateGameWindow(LPCWSTR windowName) {
 		posX, posY,
 		windowRect.right - windowRect.left,
 		windowRect.bottom - windowRect.top,
-		nullptr, nullptr, hInstance, nullptr);
+		nullptr, nullptr, hInstance, this);
 
 	ShowWindow(hWnd, SW_SHOW);
 	SetForegroundWindow(hWnd);

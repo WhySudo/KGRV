@@ -12,9 +12,11 @@ class GameHandle;
 class GameObject {
 
 public:
+	GameHandle* gameHandle;
 	Transform* transform;
 	void Draw();
 	void Update(float timeDeltaTime);
+	void Initialize();
 	GameObject(GameHandle* game) {
 		transform = new Transform();
 		gameHandle = game;
@@ -22,9 +24,6 @@ public:
 	~GameObject() {
 		delete transform;
 	}
-protected:
 	std::vector<ObjectComponent*> gameComponents;
-	GameHandle* gameHandle;
-private:
 
 };
