@@ -53,6 +53,47 @@ HRESULT RenderView::Initalize(){
 	res = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backTex);	// __uuidof(ID3D11Texture2D)
 	res = device->CreateRenderTargetView(backTex, nullptr, &renderTargetView);
 
+	D3D11_TEXTURE2D_DESC depthStencilDesc;
+	depthStencilDesc.Width = static_cast<float>(game->gameWindow->width);;
+	depthStencilDesc.Height = static_cast<float>(game->gameWindow->height);;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilDesc.SampleDesc.Count = 1;
+	depthStencilDesc.SampleDesc.Quality = 0;
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
+
+	res = this->device->CreateTexture2D(&depthStencilDesc, NULL, this->depthStencilBuffer.GetAddressOf());
+	if (FAILED(res)) //If error occurred
+	{
+		return res;
+		// Well, that was unexpected
+	}
+
+	res = this->device->CreateDepthStencilView(this->depthStencilBuffer.Get(), NULL, this->depthStencilView.GetAddressOf());
+	if (FAILED(res)) //If error occurred
+	{
+		return res;
+		// Well, that was unexpected
+	}
+
+	D3D11_DEPTH_STENCIL_DESC depthstencildesc;
+	ZeroMemory(&depthstencildesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+
+	depthstencildesc.DepthEnable = true;
+	depthstencildesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+	depthstencildesc.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+	res = device->CreateDepthStencilState(&depthstencildesc, &depthStencilState);
+
+	if (FAILED(res))
+	{
+		throw "Failed to create depth stencil state.";
+	}
+
+
 	CD3D11_RASTERIZER_DESC rastDesc = {};
 	rastDesc.CullMode = D3D11_CULL_BACK;
 	rastDesc.FillMode = D3D11_FILL_SOLID;
@@ -78,8 +119,10 @@ void RenderView::UpdateComponentView() {
 	float color[] = {1.0f, 0.1f, 0.1f, 1.0f };
 	float bgcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	context->RSSetViewports(1, &viewport);
-
+	context->OMSetRenderTargets(1, &renderTargetView, depthStencilView.Get());
 	context->ClearRenderTargetView(renderTargetView, bgcolor);
+	context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
 	for (auto object: game->loadedScene->SceneObjects) {
 		object->Draw();
 	}

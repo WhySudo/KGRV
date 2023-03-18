@@ -24,8 +24,12 @@ public:
 	ID3D11Texture2D* backTex;
 	ID3D11RasterizerState* rastState;
 	ID3D11DeviceContext* context;
+	ID3D11DepthStencilState* depthStencilState;
 	IDXGISwapChain* swapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device> device;
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> depthStencilBuffer;
+
 private:
 	std::vector<RenderObject*> renderObjects;
 };

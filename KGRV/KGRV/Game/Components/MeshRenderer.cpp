@@ -3,7 +3,10 @@
 #include <iostream>
 void MeshRenderer::Draw()
 {
-	DrawObject(gameObject->gameHandle->renderView->context, gameObject->gameHandle->renderView->renderTargetView);
+	DrawObject(
+		gameObject->gameHandle->renderView->context, 
+		gameObject->gameHandle->renderView->renderTargetView,
+		gameObject->gameHandle->renderView->depthStencilState);
 }
 
 void MeshRenderer::Update(float deltaTime)
@@ -58,12 +61,14 @@ bool MeshRenderer::Initialization()
 	device->CreateBuffer(&renderedMesh->vertexBufDesc, &renderedMesh->vertexData, &vertexBuffer);
 	device->CreateBuffer(&renderedMesh->indexBufDesc, &renderedMesh->indexData, &indexBuffer);
 
+
+
 	//device->CreateDepthStencilState(&dsDesc, &pDSState);
 	transformBuffer = CreateTransformBuffer(device);
 	drawShader->Initalize(device);
 	return true;
 }
-void MeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView)
+void MeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState)
 {
 
 
@@ -75,9 +80,9 @@ void MeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetVi
 	context->IASetVertexBuffers(0, 1, &vertexBuffer, strides, offsets);
 	context->VSSetShader(drawShader->vertexShader, nullptr, 0);
 	context->PSSetShader(drawShader->pixelShader, nullptr, 0);
-	context->OMSetRenderTargets(1, &targetView, nullptr);
+	//context->OMSetRenderTargets(1, &targetView, nullptr);
 	context->VSSetConstantBuffers(0, 1, &transformBuffer);
+	context->OMSetDepthStencilState(depthState, 0);
 	context->DrawIndexed(renderedMesh->indecesCount, 0, 0);
-	context->OMSetRenderTargets(0, nullptr, nullptr);
 
 }

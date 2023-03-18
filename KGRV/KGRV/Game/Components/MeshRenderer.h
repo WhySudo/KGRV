@@ -13,7 +13,7 @@ public:
 	}
 private:
 	void UpdateDrawMatrix();
-	void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView);
+	void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState);
 
 	Mesh* renderedMesh;
 	Shader* drawShader;
