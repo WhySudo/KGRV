@@ -2,21 +2,23 @@
 #include "../Mesh.h"
 class DefaultCube : public Mesh {
 public:
-	DefaultCube() {
+
+	DefaultCube(Vector4 customColor = { 1.0f, 1.0f, 1.0f, 1.0f }) {
+
 		points = new DirectX::XMFLOAT4[16]{
-			DirectX::XMFLOAT4(-0.5, -0.5, -0.5, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
-			DirectX::XMFLOAT4(0.5, -0.5, -0.5, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
-			DirectX::XMFLOAT4(0.5, 0.5, -0.5, 1.0f),	DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			DirectX::XMFLOAT4(-0.5, 0.5, -0.5, 1.0f),	DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			DirectX::XMFLOAT4(-0.5, 0.5, 0.5, 1.0f),	DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			DirectX::XMFLOAT4(0.5, 0.5, 0.5, 1.0f),		DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			DirectX::XMFLOAT4(0.5, -0.5, 0.5, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
-			DirectX::XMFLOAT4(-0.5, -0.5, 0.5, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f),
-			
+		DirectX::XMFLOAT4(-0.5, -0.5, -0.5, 1.0f),	customColor,
+		DirectX::XMFLOAT4(0.5, -0.5, -0.5, 1.0f),	customColor,
+		DirectX::XMFLOAT4(0.5, 0.5, -0.5, 1.0f),	customColor,
+		DirectX::XMFLOAT4(-0.5, 0.5, -0.5, 1.0f),	customColor,
+		DirectX::XMFLOAT4(-0.5, 0.5, 0.5, 1.0f),	customColor,
+		DirectX::XMFLOAT4(0.5, 0.5, 0.5, 1.0f),		customColor,
+		DirectX::XMFLOAT4(0.5, -0.5, 0.5, 1.0f),	customColor,
+		DirectX::XMFLOAT4(-0.5, -0.5, 0.5, 1.0f),	customColor,
+
 		};
 		pointCount = 16;
 		indeces = new int[36] {
-				0, 2, 1, //face front
+			0, 2, 1, //face front
 				0, 3, 2,
 				2, 3, 4, //face top
 				2, 4, 5,

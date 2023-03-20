@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+KGRV/.idea/*
+KGRV/.vs/*
+KGRV/x64/*
+KGRV/KGRV/x64/Debug/*

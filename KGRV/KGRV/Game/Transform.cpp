@@ -1,4 +1,5 @@
 #include "Transform.h"
+using namespace std;
 
 DirectX::XMMATRIX Transform::GlobalPosMatrix()
 {
@@ -9,6 +10,24 @@ DirectX::XMMATRIX Transform::GlobalPosMatrix()
 	return globalMatrix;
 }
 
+void Transform::SetParent(Transform* newParent, bool saveLocalPosition)
+{
+	if (newParent == this) {
+		return;
+	}
+	auto lastGlobalPos = GlobalPosition();
+	auto lastGlobalRot = GlobalRotation();
+	if (parent != nullptr) {
+		parent->RemoveChild(this);
+	}
+	parent = newParent;
+	parent->AddChild(this);
+	if (!saveLocalPosition) {
+		SetGlobalPos(lastGlobalPos);
+		SetGlobalRotation(lastGlobalRot);
+	}
+}
+
 void Transform::UpdateValues()
 {
 	XMMATRIX vecRotationMatrix = XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
@@ -16,6 +35,50 @@ void Transform::UpdateValues()
 	this->left = XMVector3TransformCoord(this->DEFAULT_LEFT_VECTOR, vecRotationMatrix);
 	this->up = XMVector3TransformCoord(this->DEFAULT_UP_VECTOR, vecRotationMatrix);
 
+}
+DirectX::XMMATRIX Transform::LocalToGlobalMatrix()
+{
+	auto curMatrix = GetLocalToParentMatrix();
+	auto curParent = parent;
+
+	while (curParent != nullptr)
+	{
+		curMatrix *= curParent->GetLocalToParentMatrix();
+		curParent = curParent->parent;
+	}
+
+	return curMatrix;
+}
+DirectX::XMMATRIX Transform::GlobalToLocalMatrix()
+{
+	std::vector<Transform*> parents;
+
+	auto curParent = parent;
+	if (curParent != nullptr) parents.push_back(curParent);
+
+	while (curParent != nullptr)
+	{
+		curParent = curParent->parent;
+		if (curParent != nullptr) parents.push_back(curParent);
+	}
+	auto curMatrix = XMMatrixIdentity();
+	for (int i = parents.size() - 1; i >= 0; --i)
+	{
+		curMatrix *= XMMatrixInverse(nullptr, parents[i]->GetLocalToParentMatrix());
+	}
+	curMatrix *= XMMatrixInverse(nullptr, GetLocalToParentMatrix());
+	return curMatrix;
+
+}
+void Transform::RemoveChild(Transform* child)
+{
+	vector<Transform*>::iterator position = std::find(children.begin(), children.end(), child);
+	if (position != children.end())
+		children.erase(position);
+}
+void Transform::AddChild(Transform* child)
+{
+	children.push_back(child);
 }
 void Transform::LookAt(XMFLOAT3 target)
 {
@@ -40,4 +103,44 @@ void Transform::LookAt(XMFLOAT3 target)
 	rotation.y = yaw;
 	rotation.z = 0.0f;
 
+}
+
+
+DirectX::XMMATRIX Transform::LocalToGlobalRotationMatrix()
+{
+	auto curMatrix = XMMatrixRotationRollPitchYawFromVector(rotation);
+	auto curParent = parent;
+
+	while (curParent != nullptr)
+	{
+		curMatrix *= XMMatrixRotationRollPitchYawFromVector(curParent->rotation);
+		curParent = curParent->parent;
+	}
+
+	return curMatrix;
+}
+
+XMMATRIX Transform::GlobalToLocalRotationMatrix()
+{
+
+	std::vector<Transform*> parents;
+
+	auto curParent = parent;
+	if (curParent != nullptr) parents.push_back(curParent);
+
+	while (curParent != nullptr)
+	{
+		curParent = curParent->parent;
+		if (curParent != nullptr) parents.push_back(curParent);
+	}
+
+	auto curMatrix = XMMatrixRotationRollPitchYaw(0, 0, 0);
+	for (int i = parents.size() - 1; i >= 0; --i)
+	{
+		curMatrix *= XMMatrixInverse(nullptr, XMMatrixRotationRollPitchYawFromVector(parents[i]->rotation));
+	}
+	curMatrix *= XMMatrixInverse(nullptr, XMMatrixRotationRollPitchYawFromVector(rotation));
+
+
+	return curMatrix;
 }

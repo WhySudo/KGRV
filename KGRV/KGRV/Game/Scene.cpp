@@ -13,6 +13,9 @@ void Scene::AddObject(GameObject* object)
 void Scene::Update(float deltaTime)
 {
 	for (auto gameObject : SceneObjects) {
+		gameObject->PhysicsUpdate(deltaTime);
+	}
+	for (auto gameObject : SceneObjects) {
 		gameObject->Update(deltaTime);
 	}
 }

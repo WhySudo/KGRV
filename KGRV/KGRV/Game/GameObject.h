@@ -16,7 +16,9 @@ public:
 	Transform* transform;
 	void Draw();
 	void Update(float timeDeltaTime);
+	void PhysicsUpdate(float timeDeltaTime);
 	void Initialize();
+	
 	GameObject(GameHandle* game) {
 		transform = new Transform();
 		gameHandle = game;

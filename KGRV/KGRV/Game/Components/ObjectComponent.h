@@ -10,7 +10,13 @@ public:
 	virtual void Draw() {
 
 	}
+	virtual void PhysicsUpdate(float timeDeltaTime) {
+
+	}
 	virtual void Update(float deltaTime) = 0;
+	virtual void LateUpdate(float deltaTime) {
+	
+	}
 	bool Initialize() {
 		isInitialized = Initialization();
 		return isInitialized;
@@ -19,6 +25,8 @@ public:
 	bool IsInitialized() {
 		return	isInitialized;
 	}
+	
+
 protected:
 	bool isInitialized;
 

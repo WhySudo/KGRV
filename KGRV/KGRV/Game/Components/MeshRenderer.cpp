@@ -19,7 +19,7 @@ void MeshRenderer::UpdateDrawMatrix() {
 	auto camera = gameObject->gameHandle->loadedScene->currentCamera;
 	if (camera == nullptr)
 		return;
-	DirectX::XMMATRIX modelMatrix = gameObject->transform->GlobalPosMatrix();
+	DirectX::XMMATRIX modelMatrix = gameObject->transform->LocalToGlobalMatrix();
 	
 	//data.matrix = DirectX::XMMatrixScaling(gameObject->transform->scale.x, gameObject->transform->scale.y, gameObject->transform->scale.z) *
 	//DirectX::XMMatrixTranslation(gameObject->transform->position.x, gameObject->transform->position.y, gameObject->transform->position.z);
@@ -80,7 +80,6 @@ void MeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetVi
 	context->IASetVertexBuffers(0, 1, &vertexBuffer, strides, offsets);
 	context->VSSetShader(drawShader->vertexShader, nullptr, 0);
 	context->PSSetShader(drawShader->pixelShader, nullptr, 0);
-	//context->OMSetRenderTargets(1, &targetView, nullptr);
 	context->VSSetConstantBuffers(0, 1, &transformBuffer);
 	context->OMSetDepthStencilState(depthState, 0);
 	context->DrawIndexed(renderedMesh->indecesCount, 0, 0);

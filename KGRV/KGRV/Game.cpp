@@ -8,6 +8,8 @@
 #include "Game/DefaultObjects/BaseCameraObject.h"
 #include "Game/Components/RotateAroundComponent.h"
 #include "Game/DefaultObjects/EmptyRotatingPoint.h"
+#include "Game/DefaultObjects/KatamariBall.h"
+#include "Game/DefaultObjects/SimpleKatamariObject.h"
 #include <iostream>
 int main()
 {
@@ -26,9 +28,7 @@ int main()
 	shader.Initalize(game.renderView->device.Get());
 
 	BaseCameraObject camera = BaseCameraObject(&game);
-	camera.transform->position.y = 5;
-	camera.transform->position.x = 5;
-	camera.transform->position.z = 5;
+	
 	//SimpleBallObject ball = SimpleBallObject(&game, &shader);
 
 
@@ -40,79 +40,40 @@ int main()
 	//SimpleWallObject wall4 = SimpleWallObject(&game, &shader, { 0, 1 }, { 0, -1.06, 0, 1 }, { 2, 0.2, 1, 1 });
 
 	SimpleCubeObject CentralPlanet = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube2 = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube3 = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube4 = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube5 = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube6 = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube7 = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube8 = SimpleCubeObject(&game, &shader);
-	SimpleCubeObject cube9 = SimpleCubeObject(&game, &shader);
+	KatamariBall movingBall = KatamariBall(&game, &shader);
 
-	EmptyRotatingPoint central = EmptyRotatingPoint(&game, &CentralPlanet, { 1.0f, 0.0f, 0.0f }, { 0.0, 0.0, 1.f }, 3.14159 / 1);
-	EmptyRotatingPoint central2 = EmptyRotatingPoint(&game, &CentralPlanet, { 0.0f, 1.0f, 0.0f }, { 3.0, 0.0, 0.f }, 3.14159 / 1);
-	EmptyRotatingPoint central3 = EmptyRotatingPoint(&game, &cube5, { 1.0f, 0.0f, 0.0f }, { 0.0, 0.0, 5.0f }, 3.14159 / 1);
-	EmptyRotatingPoint central4 = EmptyRotatingPoint(&game, &cube8, { 0.0f, 1.0f, 0.0f }, { 1.0, 0.0, 0.f }, 3.14159 / 1);
-	EmptyRotatingPoint central5 = EmptyRotatingPoint(&game, &cube3, { 0.0f, 0.0f, 1.0f }, { 3.0, 0.0, 0.f }, 3.14159 / 1);
-	EmptyRotatingPoint central6 = EmptyRotatingPoint(&game, &cube9, { 0.0f, 1.0f, 0.0f }, { 20.0, 0.0, 0.f }, 3.14159 );
+	SimpleKatamariObject testObj = SimpleKatamariObject(&game, &shader);
+	SimpleKatamariObject testObj2 = SimpleKatamariObject(&game, &shader);
+	SimpleKatamariObject testObj3 = SimpleKatamariObject(&game, &shader);
 
-	camera.attachment->targetPoints.push_back(&central);
-	camera.attachment->targetPoints.push_back(&central2);
-	camera.attachment->targetPoints.push_back(&central3);
-	camera.attachment->targetPoints.push_back(&central4);
-	camera.attachment->targetPoints.push_back(&central5);
-	camera.attachment->targetPoints.push_back(&central6);
+	CentralPlanet.transform->scale = { 20.0f, 1.0f, 20.0f };
+	movingBall.transform->position = { 0.0f ,1.0f, 0.0f };
 
-	CentralPlanet.transform->scale = { 2, 2, 2 };
-	cube3.transform->position.x = 3;
-	cube2.transform->position.y = 3;
-	cube4.transform->position.z = 3;
 
-	cube5.transform->position.x = 3;
-	cube5.transform->position.y = 3;
-	cube5.transform->position.z = 3;
+	camera.transform->position.y = 3;
+	camera.transform->position.x = 0;
+	camera.transform->position.z = -1;
 
-	cube6.transform->position.x = -5;
-	cube6.transform->position.y = 10;
-	cube6.transform->position.z = 0;
+	testObj.transform->position = { 10.0f, 1.5f, 3.0f };
+	testObj2.transform->position = { -10.0f, 0.5f, -3.0f };
+	testObj3.transform->position = { 5.0f, 1.0f, 10.0f };
 
-	cube7.transform->position.x = -5;
-	cube7.transform->position.y = -10;
-	cube7.transform->position.z = -3;
 
-	cube8.transform->position.x = 5;
-	cube8.transform->position.y = 10;
-	cube8.transform->position.z = -3;
-
-	cube9.transform->position.x = 5;
-	cube9.transform->position.y = -10;
-	cube9.transform->position.z = 3;
-
-	RotateAroundComponent rotComponent((GameObject*)&cube9, (GameObject*) &cube8, { 1.0f, 0.0f, 0.0f }, { 0.0f, 3.0f, 0.0f }, 3.14159f);
-	RotateAroundComponent rotComponent2((GameObject*)&cube8, (GameObject*) &CentralPlanet, { 0.0f, 0.0f, 1.0f }, { 3.0f, 0.0f, 0.0f }, 3.14159f/4);
-	cube9.gameComponents.push_back(&rotComponent);
-	cube8.gameComponents.push_back(&rotComponent2);
+	//RotateAroundComponent rotComponent((GameObject*)&cube2, (GameObject*) &CentralPlanet, { 1.0f, 0.0f, 0.0f }, { 0.0f, 3.0f, 0.0f }, 3.14159f);
+	//cube2.gameComponents.push_back(&rotComponent);
 	
 	game.loadedScene->currentCamera = camera.GetCamera();
-	XMFLOAT3 LookAt{ CentralPlanet.transform->position.x, CentralPlanet.transform->position.y, CentralPlanet.transform->position.z };
+	XMFLOAT3 LookAt{ movingBall.transform->position.x, movingBall.transform->position.y, movingBall.transform->position.z };
 	camera.GetCamera()->LookAt(LookAt);
 	game.loadedScene->AddObject(&camera);
 	game.loadedScene->AddObject(&CentralPlanet);
-	game.loadedScene->AddObject(&cube2);
-	game.loadedScene->AddObject(&cube3);
-	game.loadedScene->AddObject(&cube4);
-	game.loadedScene->AddObject(&cube5);
-	game.loadedScene->AddObject(&cube6);
-	game.loadedScene->AddObject(&cube7);
-	game.loadedScene->AddObject(&cube8);
-	game.loadedScene->AddObject(&cube9);
+	game.loadedScene->AddObject(&movingBall);
+	game.loadedScene->AddObject(movingBall.view);
+	game.loadedScene->AddObject(&testObj);
+	game.loadedScene->AddObject(&testObj2);
+	game.loadedScene->AddObject(&testObj3);
+//	game.loadedScene->AddObject(&cube3);
 
-	game.loadedScene->AddObject(&central);
-	game.loadedScene->AddObject(&central2);
-	game.loadedScene->AddObject(&central3);
-	game.loadedScene->AddObject(&central4);
-	game.loadedScene->AddObject(&central5);
-	game.loadedScene->AddObject(&central6);
 	//	DefaultRectangle rectangleMesh = DefaultRectangle();
 	//Mesh triangleMesh(trianglePoints, 6, triangleTriangles, 3);
 	
