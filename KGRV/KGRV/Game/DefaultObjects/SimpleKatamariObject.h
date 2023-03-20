@@ -1,7 +1,7 @@
 #pragma once
 #include "../GameObject.h"
 #include "../Graphics/DefaultMesh/DefaultCube.h"
-#include "../Components/MeshRenderer.h"
+#include "../Components/Renderers/MeshRenderer.h"
 #include "../Components/MovingBallComponent.h"
 #include "../Components/ObjectRotator.h"
 #include "../Components/KatamariMovement.h"
@@ -17,7 +17,7 @@ public:
 		view->transform->SetParent(transform);
 		view->transform->scale = { scale, scale, scale, 1.0f};
 		if (fbxPath.compare("") != 0){
-			cubeMesh = FbxMeshImporter::Import(fbxPath);
+			cubeMesh = FbxMeshImporter::Import(fbxPath, false);
 		}
 		
 		if (cubeMesh == nullptr) {

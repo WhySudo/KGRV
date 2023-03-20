@@ -141,7 +141,7 @@
     <ClCompile Include="Game\ThirdParty\SimpleMath.cpp" />
     <ClCompile Include="Game\Components\CameraComponent.cpp" />
     <ClCompile Include="Game\Components\InputCameraComponent.cpp" />
-    <ClCompile Include="Game\Components\MeshRenderer.cpp" />
+    <ClCompile Include="Game\Components\Renderers\MeshRenderer.cpp" />
     <ClCompile Include="Game\Components\ObjectRotator.cpp" />
     <ClCompile Include="Game\Components\RotateAroundComponent.cpp" />
     <ClCompile Include="Game\DefaultObjects\SimpleKatamariObject.h" />
@@ -171,6 +171,9 @@
     <ClCompile Include="Game\Components\WallComponent.cpp" />
     <ClCompile Include="Game\DefaultObjects\SimpleWallObject.cpp" />
     <ClCompile Include="Game\Graphics\Tools\TextureImporter.cpp" />
+    <ClCompile Include="Game\Graphics\Shaders\TextureShader.cpp" />
+    <ClCompile Include="Game\Components\Renderers\TextureMeshRenderer.cpp" />
+    <ClCompile Include="Game\Assets\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\color4.inl" />
@@ -261,6 +264,8 @@
     <ClInclude Include="assimp\version.h" />
     <ClInclude Include="assimp\Vertex.h" />
     <ClInclude Include="assimp\XMLTools.h" />
+    <ClInclude Include="Game\DefaultObjects\TexturedKatamariBall.h" />
+    <ClInclude Include="Game\Graphics\DefaultMesh\DefaultTexturedCube.h" />
     <ClInclude Include="Game\ThirdParty\DDS.h" />
     <ClInclude Include="Game\ThirdParty\DDSTextureLoader.h" />
     <ClInclude Include="Game\Graphics\Tools\FbxMeshImporter.h" />
@@ -275,7 +280,7 @@
     <ClInclude Include="Game\ThirdParty\SimpleMath.h" />
     <ClInclude Include="Game\Components\CameraComponent.h" />
     <ClInclude Include="Game\Components\InputCameraComponent.h" />
-    <ClInclude Include="Game\Components\MeshRenderer.h" />
+    <ClInclude Include="Game\Components\Renderers\MeshRenderer.h" />
     <ClInclude Include="Game\Components\ObjectRotator.h" />
     <ClInclude Include="Game\Components\RotateAroundComponent.h" />
     <ClInclude Include="Game\Components\RoundWall.h" />
@@ -315,6 +320,9 @@
     <ClInclude Include="Game\Components\KatamariObject.h" />
     <ClInclude Include="Game\Components\KatamariObjectCapture.h" />
     <ClInclude Include="Game\Graphics\Tools\TextureImporter.h" />
+    <ClInclude Include="Game\Graphics\Shaders\TextureShader.h" />
+    <ClInclude Include="Game\Components\Renderers\TextureMeshRenderer.h" />
+    <ClInclude Include="Game\Assets\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="Game\ThirdParty\Input\Delegates.natvis" />

@@ -1,4 +1,5 @@
 #include "KatamariMovement.h"
+#include "CameraComponent.h"
 #include <iostream>
 void KatamariMovement::Update(float deltaTime)
 {
@@ -13,7 +14,13 @@ bool KatamariMovement::Initialization()
 
 void KatamariMovement::CalculateMovementFromInput(float deltaTime)
 {
+	auto camera = gameObject->gameHandle->loadedScene->currentCamera->gameObject->transform;
+	Vector3 forward = camera->forward;
+	forward.y = 0;
+	forward.Normalize();
 
+	Vector3 normal = { 0,1,0 };
+	Vector3 right = normal.Cross(forward);
 	auto inputDevice = gameObject->gameHandle->inputDevice;
 	if (inputDevice->IsKeyDown(Keys::Z)) {
 		return;
@@ -21,19 +28,19 @@ void KatamariMovement::CalculateMovementFromInput(float deltaTime)
 	XMVECTOR direction = { 0.0f, 0.0f, 0.0f };
 	bool anyMovement = false;
 	if (inputDevice->IsKeyDown(Keys::Up)) {
-		direction += gameObject->transform->forward;
+		direction += forward;
 		anyMovement = true;
 	}
 	if (inputDevice->IsKeyDown(Keys::Down)) {
-		direction -= gameObject->transform->forward;
+		direction -= forward;
 		anyMovement = true;
 	}
 	if (inputDevice->IsKeyDown(Keys::Left)) {
-		direction += gameObject->transform->left;
+		direction -= right;
 		anyMovement = true;
 	}
 	if (inputDevice->IsKeyDown(Keys::Right)) {
-		direction -= gameObject->transform->left;
+		direction += right;
 		anyMovement = true;
 	}
 

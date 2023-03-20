@@ -1,19 +1,19 @@
 #pragma once
-#include "ObjectComponent.h"
+#include "../ObjectComponent.h"
 class ObjectComponent;
 class MeshRenderer : public ObjectComponent {
 public:
 	void Draw() override;
 	void Update(float deltaTime) override;
 	ID3D11Buffer* CreateTransformBuffer(ID3D11Device* device);
-	bool Initialization() override;
+	virtual bool Initialization() override;
 	MeshRenderer(GameObject* gameObject, Mesh* renderedMesh, Shader* drawShader) :ObjectComponent(gameObject) {
 		this->renderedMesh = renderedMesh;
 		this->drawShader = drawShader;
 	}
-private:
+protected:
 	void UpdateDrawMatrix();
-	void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState);
+	virtual void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState);
 
 	Mesh* renderedMesh;
 	Shader* drawShader;

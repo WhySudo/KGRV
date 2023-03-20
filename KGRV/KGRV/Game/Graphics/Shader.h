@@ -8,9 +8,9 @@ public:
 	ID3D11VertexShader* vertexShader;
 	ID3D11PixelShader* pixelShader;
 	ID3D11InputLayout* layout;
-	HRESULT Initalize(ID3D11Device* device);
+	virtual HRESULT Initalize(ID3D11Device* device);
 	Shader(LPCWSTR shaderSource);
-private:
+protected:
 	ID3D11Device* device;
 	GameWindow* targetWindow;
 	LPCWSTR shaderSource;

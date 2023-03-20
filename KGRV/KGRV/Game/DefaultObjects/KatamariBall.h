@@ -1,7 +1,7 @@
 #pragma once
 #include "../GameObject.h"
 #include "../Graphics/DefaultMesh/DefaultCube.h"
-#include "../Components/MeshRenderer.h"
+#include "../Components/Renderers/MeshRenderer.h"
 #include "../Components/MovingBallComponent.h"
 #include "../Components/ObjectRotator.h"
 #include "../Components/KatamariMovement.h"

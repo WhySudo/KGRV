@@ -2,7 +2,7 @@
 
 #include "../GameObject.h"
 #include "../Graphics/DefaultMesh/DefaultRectangle.h"
-#include "../Components/MeshRenderer.h"
+#include "../Components/Renderers/MeshRenderer.h"
 #include "../Components/WallComponent.h"
 
 class SimpleWallObject: public GameObject

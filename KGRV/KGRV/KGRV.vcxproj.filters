@@ -54,7 +54,7 @@
     <ClCompile Include="Game\ThirdParty\Input\InputDevice.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Components\MeshRenderer.cpp">
+    <ClCompile Include="Game\Components\Renderers\MeshRenderer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Game\Scene.cpp">
@@ -121,6 +121,15 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Game\Graphics\Tools\TextureImporter.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Graphics\Shaders\TextureShader.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\Renderers\TextureMeshRenderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Assets\Texture.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,7 +218,7 @@
     <ClInclude Include="Game\ThirdParty\Input\Keys.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Components\MeshRenderer.h">
+    <ClInclude Include="Game\Components\Renderers\MeshRenderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Game\Graphics\DefaultMesh\DefaultRectangle.h">
@@ -537,6 +546,21 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Game\Graphics\Tools\TextureImporter.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Graphics\Shaders\TextureShader.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\Renderers\TextureMeshRenderer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Assets\Texture.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Graphics\DefaultMesh\DefaultTexturedCube.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\TexturedKatamariBall.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

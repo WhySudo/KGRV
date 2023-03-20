@@ -1,7 +1,7 @@
 #pragma once
 #include "../GameObject.h"
 #include "../Graphics/DefaultMesh/DefaultBall.h"
-#include "../Components/MeshRenderer.h"
+#include "../Components/Renderers/MeshRenderer.h"
 #include "../Components/MovingBallComponent.h"
 class SimpleBallObject : public GameObject
 {

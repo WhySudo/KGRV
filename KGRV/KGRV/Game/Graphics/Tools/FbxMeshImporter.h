@@ -4,6 +4,6 @@
 class FbxMeshImporter
 {
 public:
-	static Mesh* Import(std::string filepath);
+	static Mesh* Import(std::string filepath,  bool textured = false);
 };
 

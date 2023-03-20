@@ -1,5 +1,5 @@
 #include "MeshRenderer.h"
-#include "CameraComponent.h"
+#include "../CameraComponent.h"
 #include <iostream>
 void MeshRenderer::Draw()
 {
@@ -58,6 +58,7 @@ ID3D11Buffer* MeshRenderer::CreateTransformBuffer(ID3D11Device* device) {
 bool MeshRenderer::Initialization()
 {
 	ID3D11Device* device = gameObject->gameHandle->renderView->device.Get();
+	cout << "Try to init " << renderedMesh->initialized << renderedMesh->textured << endl;
 	device->CreateBuffer(&renderedMesh->vertexBufDesc, &renderedMesh->vertexData, &vertexBuffer);
 	device->CreateBuffer(&renderedMesh->indexBufDesc, &renderedMesh->indexData, &indexBuffer);
 
@@ -75,7 +76,7 @@ void MeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetVi
 	UINT strides[] = { 32 };
 	UINT offsets[] = { 0 };
 	context->IASetInputLayout(drawShader->layout);
-	context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetPrimitiveTopology(renderedMesh->topology);
 	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	context->IASetVertexBuffers(0, 1, &vertexBuffer, strides, offsets);
 	context->VSSetShader(drawShader->vertexShader, nullptr, 0);

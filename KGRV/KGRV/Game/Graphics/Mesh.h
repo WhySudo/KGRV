@@ -2,24 +2,46 @@
 #include <DirectXMath.h>
 #include <d3d.h>
 #include <d3d11.h>
+#include <vector>
+#include "../Assets/Texture.h"
+struct Vertex {
+	Vertex() {}
+	Vertex(DirectX::XMFLOAT3 pos, DirectX::XMFLOAT2 uv, DirectX::XMFLOAT3 normal) : position(pos.x, pos.y, pos.z, 1), texturePos(uv.x, uv.y), normal(normal.x, normal.y, normal.z, 0) {}
+	Vertex(DirectX::XMFLOAT3 pos, DirectX::XMFLOAT2 uv) : position(pos.x, pos.y, pos.z, 1), texturePos(uv.x, uv.y) {}
+	Vertex(DirectX::XMFLOAT3 pos) : position(pos.x, pos.y, pos.z, 1), texturePos(0, 0) {}
+
+	DirectX::XMFLOAT4 position = { 0,0,0,1 };
+	DirectX::XMFLOAT2 texturePos = { 0, 0 };
+	DirectX::XMFLOAT4 normal = { 0,0,0,0 };
+
+};
+struct VertexWithColor
+{
+	VertexWithColor(DirectX::XMFLOAT4 position) : position(position), color(1.0f, 1.0f, 1.0f) {}
+	VertexWithColor(DirectX::XMFLOAT4 position, DirectX::XMFLOAT3 color) : position(position), color(color) {}
+	VertexWithColor(DirectX::XMFLOAT3 position, DirectX::XMFLOAT3 color) : position(position.x, position.y, position.z, 1.0f), color(color) {}
+
+	DirectX::XMFLOAT4 position = { 0,0,0,1 };
+	DirectX::XMFLOAT3 color;
+};
+
 class Mesh {
 public:
-	Mesh(DirectX::XMFLOAT4* points,	int pointCount, int* indeces, int indecesCount) {
-		//TODO: DEPRECATED
-		this->pointCount = pointCount;
-		this->indecesCount = indecesCount;
-		this->points = new DirectX::XMFLOAT4[pointCount];
-		this->indeces = new int[indecesCount];
-
-
-		memcpy(this->points, points, sizeof(DirectX::XMFLOAT4) * pointCount);
-		memcpy(this->indeces, indeces, sizeof(int) * pointCount);
-		InitalizeMesh();
-	}
 	Mesh() {
 	}
-	DirectX::XMFLOAT4* points = nullptr;
-	int* indeces = nullptr;
+
+	std::vector<DirectX::XMFLOAT4> points;
+	std::vector<Vertex> vertex;
+
+
+
+	std::vector<int> indeces;
+	Texture* assignedTexture;
+
+
+	//DirectX::XMFLOAT4* points = nullptr;
+	//int* indeces = nullptr;
+
 	int pointCount;
 	int indecesCount;
 	D3D11_BUFFER_DESC vertexBufDesc;
@@ -27,9 +49,10 @@ public:
 	D3D11_BUFFER_DESC indexBufDesc;
 	D3D11_SUBRESOURCE_DATA indexData;
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
-	
+	D3D_PRIMITIVE_TOPOLOGY topology;
 
-	void InitalizeMesh() {
+	virtual void InitalizeMesh(bool useVertexData = false) {
+		textured = useVertexData;
 		vertexBufDesc = {};
 		vertexData = {};
 		indexBufDesc = {};
@@ -40,9 +63,18 @@ public:
 		vertexBufDesc.CPUAccessFlags = 0;
 		vertexBufDesc.MiscFlags = 0;
 		vertexBufDesc.StructureByteStride = 0;
-		vertexBufDesc.ByteWidth = sizeof(DirectX::XMFLOAT4) * pointCount;
-
-		vertexData.pSysMem = points;
+		if (!useVertexData) {
+			vertexBufDesc.ByteWidth = sizeof(DirectX::XMFLOAT4) * pointCount;
+		}
+		else {
+			vertexBufDesc.ByteWidth = sizeof(Vertex) * pointCount;
+		}
+		if (!useVertexData) {
+			vertexData.pSysMem = points.data();
+		}
+		else {
+			vertexData.pSysMem = vertex.data();
+		}
 		vertexData.SysMemPitch = 0;
 		vertexData.SysMemSlicePitch = 0;
 
@@ -55,7 +87,7 @@ public:
 
 
 
-		indexData.pSysMem = indeces;
+		indexData.pSysMem = indeces.data();
 		indexData.SysMemPitch = 0;
 		indexData.SysMemSlicePitch = 0;
 
@@ -82,14 +114,17 @@ public:
 		dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 		dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-	
+		this->topology = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		initialized = true;
 	}
+	bool initialized = false;
+	bool textured = false;
 	~Mesh() {
-		if (points != nullptr) {
-			delete points;
-		}
-		if (indeces != nullptr) {
-			delete indeces;
-		}
+		//if (points != nullptr) {
+		//	delete points;
+		//}
+		//if (indeces != nullptr) {
+		//	delete indeces;
+		//}
 	}
 };
