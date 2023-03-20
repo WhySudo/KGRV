@@ -43,7 +43,7 @@ int main()
 	KatamariBall movingBall = KatamariBall(&game, &shader);
 
 	SimpleKatamariObject testObj = SimpleKatamariObject(&game, &shader);
-	SimpleKatamariObject testObj2 = SimpleKatamariObject(&game, &shader);
+	SimpleKatamariObject testObj2 = SimpleKatamariObject(&game, &shader, "./Models/horse.fbx", .5f, .01f);
 	SimpleKatamariObject testObj3 = SimpleKatamariObject(&game, &shader);
 
 	CentralPlanet.transform->scale = { 20.0f, 1.0f, 20.0f };
@@ -70,8 +70,11 @@ int main()
 	game.loadedScene->AddObject(&movingBall);
 	game.loadedScene->AddObject(movingBall.view);
 	game.loadedScene->AddObject(&testObj);
+	game.loadedScene->AddObject(testObj.view);
 	game.loadedScene->AddObject(&testObj2);
+	game.loadedScene->AddObject(testObj2.view);
 	game.loadedScene->AddObject(&testObj3);
+	game.loadedScene->AddObject(testObj3.view);
 //	game.loadedScene->AddObject(&cube3);
 
 	//	DefaultRectangle rectangleMesh = DefaultRectangle();

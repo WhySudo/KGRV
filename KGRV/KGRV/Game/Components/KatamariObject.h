@@ -3,8 +3,8 @@
 class KatamariObject : public ObjectComponent
 {
 public: 
-	KatamariObject(GameObject* obj) :ObjectComponent(obj){
-		sphere = new DirectX::BoundingSphere(gameObject->transform->position, .5f); 
+	KatamariObject(GameObject* obj, float sphereRadius = 0.5f) :ObjectComponent(obj){
+		sphere = new DirectX::BoundingSphere(gameObject->transform->position, sphereRadius);
 		captured = false;
 	}
 	~KatamariObject()

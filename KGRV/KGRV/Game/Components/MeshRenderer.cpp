@@ -75,7 +75,7 @@ void MeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetVi
 	UINT strides[] = { 32 };
 	UINT offsets[] = { 0 };
 	context->IASetInputLayout(drawShader->layout);
-	context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	context->IASetVertexBuffers(0, 1, &vertexBuffer, strides, offsets);
 	context->VSSetShader(drawShader->vertexShader, nullptr, 0);

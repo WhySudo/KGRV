@@ -1,5 +1,6 @@
 #include "KatamariObjectCapture.h"
 #include <iostream>
+
 using namespace std;
 void KatamariObjectCapture::SearchForObjectCapture()
 {
@@ -31,9 +32,7 @@ void KatamariObjectCapture::CaptureObject(KatamariObject* obj)
 	capturedObjects.push_back(obj);
 	auto storedPos = obj->gameObject->transform->GlobalPosition();
 	obj->gameObject->transform->SetParent(targetView);
-	auto newPos = obj->gameObject->transform->position;
-	cout << "Capture global: " << storedPos.x << " " << storedPos.y << " " << storedPos.z << " " << " to local " << newPos.x << " " << newPos.y << " " << newPos.z << " " << endl;
-	
+	auto newPos = obj->gameObject->transform->position;	
 
 }
 

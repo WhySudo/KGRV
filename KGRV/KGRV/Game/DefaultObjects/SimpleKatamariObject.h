@@ -6,17 +6,28 @@
 #include "../Components/ObjectRotator.h"
 #include "../Components/KatamariMovement.h"
 #include "../Components/KatamariObject.h"
+#include "../Graphics/Tools/FbxMeshImporter.h"
 class SimpleKatamariObject : public GameObject
 {
 
 public:
-	SimpleKatamariObject(GameHandle* handle, Shader* shader) : GameObject(handle) {
-		cubeMesh = new DefaultCube({ 1.0f, 1.0f, 0.0f, 1.0f });
+	SimpleKatamariObject(GameHandle* handle, Shader* shader, std::string fbxPath = "", float sphereRadius = .5f, float scale = 1.0f) : GameObject(handle) {
+		
+		view = new GameObject(handle);
+		view->transform->SetParent(transform);
+		view->transform->scale = { scale, scale, scale, 1.0f};
+		if (fbxPath.compare("") != 0){
+			cubeMesh = FbxMeshImporter::Import(fbxPath);
+		}
+		
+		if (cubeMesh == nullptr) {
+			cubeMesh = new DefaultCube({ 1.0f, 1.0f, 0.0f, 1.0f });
+		}
+		rendererComponent = new MeshRenderer((GameObject*)view, cubeMesh, shader);
+		view->gameComponents.push_back(rendererComponent);
 		transform->scale = { 1, 1, 1, 1 };
 		this->shader = shader;
-		rendererComponent = new MeshRenderer((GameObject*)this, reinterpret_cast<Mesh*>(cubeMesh), shader);
-		katamari = new KatamariObject((GameObject*)this);
-		gameComponents.push_back(rendererComponent);
+		katamari = new KatamariObject((GameObject*)this, sphereRadius);
 		gameComponents.push_back(katamari);
 	}
 
@@ -29,7 +40,7 @@ public:
 	}
 
 private:
-	DefaultCube* cubeMesh;
+	Mesh* cubeMesh;
 	KatamariObject* katamari;
 	Shader* shader;
 	MeshRenderer* rendererComponent;
