@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../../3rdParty/SimpleMath.h"
+#include "../../ThirdParty/SimpleMath.h"
 #include "assimp/Importer.hpp"
 //#include "assimp/cimport.h"
 #include "assimp/postprocess.h"

@@ -1,5 +1,5 @@
 #include "RotateAroundComponent.h"
-#include "..\3rdParty\SimpleMath.h"
+#include "..\ThirdParty\SimpleMath.h"
 void RotateAroundComponent::Update(float deltaTime)
 {
     auto targetObjectPos = targetObject->transform->position;

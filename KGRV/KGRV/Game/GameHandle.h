@@ -4,7 +4,7 @@
 #include "Window/Components/RenderView.h"
 #include "Window/Components/DebugWindowText.h"
 #include "Scene.h"
-#include "3rdParty/Input/InputDevice.h"
+#include "ThirdParty/Input/InputDevice.h"
 class RenderView;
 class Scene;
 class GameHandle {

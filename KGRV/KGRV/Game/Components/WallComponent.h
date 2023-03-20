@@ -1,7 +1,7 @@
 #pragma once
 #include "ObjectComponent.h"
 #include <iostream>
-#include "../3rdParty/SimpleMath.h"
+#include "../ThirdParty/SimpleMath.h"
 using namespace DirectX::SimpleMath;
 class WallComponent: public ObjectComponent
 {

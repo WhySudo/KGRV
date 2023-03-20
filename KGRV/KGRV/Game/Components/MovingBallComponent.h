@@ -1,6 +1,6 @@
 #pragma once
 #include "ObjectComponent.h"
-#include "../3rdParty/SimpleMath.h"
+#include "../ThirdParty/SimpleMath.h"
 class MovingBallComponent: public ObjectComponent
 {
 public:

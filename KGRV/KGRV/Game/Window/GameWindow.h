@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#include "../3rdParty/Input/InputDevice.h"
+#include "../ThirdParty/Input/InputDevice.h"
 class GameWindow
 {
 //	friend class InputDevice;

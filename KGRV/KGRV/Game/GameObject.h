@@ -3,7 +3,7 @@
 
 #include "Transform.h"
 #include "Components/ObjectComponent.h"
-#include "3rdParty/SimpleMath.h"
+#include "ThirdParty/SimpleMath.h"
 #include "GameHandle.h"
 
 using namespace DirectX::SimpleMath;

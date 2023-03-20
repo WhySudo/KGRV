@@ -1,5 +1,5 @@
 #pragma once
-#include "3rdParty/SimpleMath.h"
+#include "ThirdParty/SimpleMath.h"
 #include <vector>
 #include <iostream>
 using namespace std;

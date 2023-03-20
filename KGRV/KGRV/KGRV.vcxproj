@@ -135,9 +135,10 @@
   <ItemGroup>
     <ClCompile Include="Game\Graphics\Tools\FbxMeshImporter.cpp" />
     <ClCompile Include="Game\Components\CameraPointsAttachment.cpp" />
-    <ClCompile Include="Game\3rdParty\Input\Delegates.cpp" />
-    <ClCompile Include="Game\3rdParty\Input\InputDevice.cpp" />
-    <ClCompile Include="Game\3rdParty\SimpleMath.cpp" />
+    <ClCompile Include="Game\ThirdParty\DDSTextureLoader.cpp" />
+    <ClCompile Include="Game\ThirdParty\Input\Delegates.cpp" />
+    <ClCompile Include="Game\ThirdParty\Input\InputDevice.cpp" />
+    <ClCompile Include="Game\ThirdParty\SimpleMath.cpp" />
     <ClCompile Include="Game\Components\CameraComponent.cpp" />
     <ClCompile Include="Game\Components\InputCameraComponent.cpp" />
     <ClCompile Include="Game\Components\MeshRenderer.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Game\DefaultObjects\SimpleKatamariObject.h" />
     <ClCompile Include="Game\DefaultObjects\SimplePlayerPlatform.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Game\ThirdParty\WICTextureLoader.cpp" />
     <ClCompile Include="Game\Window\Components\DebugWindowText.cpp" />
     <ClCompile Include="Game.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FS %(AdditionalOptions)</AdditionalOptions>
@@ -168,6 +170,7 @@
     <ClCompile Include="Game\DefaultObjects\SimpleBallObject.cpp" />
     <ClCompile Include="Game\Components\WallComponent.cpp" />
     <ClCompile Include="Game\DefaultObjects\SimpleWallObject.cpp" />
+    <ClCompile Include="Game\Graphics\Tools\TextureImporter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\color4.inl" />
@@ -179,7 +182,7 @@
     <None Include="assimp\SmoothingGroups.inl" />
     <None Include="assimp\vector2.inl" />
     <None Include="assimp\vector3.inl" />
-    <None Include="Game\3rdParty\SimpleMath.inl" />
+    <None Include="Game\ThirdParty\SimpleMath.inl" />
     <None Include="Shaders\MyVeryFirstShader.hlsl">
       <FileType>Document</FileType>
     </None>
@@ -258,13 +261,18 @@
     <ClInclude Include="assimp\version.h" />
     <ClInclude Include="assimp\Vertex.h" />
     <ClInclude Include="assimp\XMLTools.h" />
+    <ClInclude Include="Game\ThirdParty\DDS.h" />
+    <ClInclude Include="Game\ThirdParty\DDSTextureLoader.h" />
     <ClInclude Include="Game\Graphics\Tools\FbxMeshImporter.h" />
     <ClInclude Include="Game\Components\CameraPointsAttachment.h" />
-    <ClInclude Include="Game\3rdParty\Input\Delegates.h" />
-    <ClInclude Include="Game\3rdParty\Input\InputDevice.h" />
-    <ClInclude Include="Game\3rdParty\Input\Keys.h" />
-    <ClInclude Include="Game\3rdParty\pch.h" />
-    <ClInclude Include="Game\3rdParty\SimpleMath.h" />
+    <ClInclude Include="Game\ThirdParty\DirectXHelpers.h" />
+    <ClInclude Include="Game\ThirdParty\Input\Delegates.h" />
+    <ClInclude Include="Game\ThirdParty\Input\InputDevice.h" />
+    <ClInclude Include="Game\ThirdParty\Input\Keys.h" />
+    <ClInclude Include="Game\ThirdParty\LoaderHelpers.h" />
+    <ClInclude Include="Game\ThirdParty\pch.h" />
+    <ClInclude Include="Game\ThirdParty\PlatformHelpers.h" />
+    <ClInclude Include="Game\ThirdParty\SimpleMath.h" />
     <ClInclude Include="Game\Components\CameraComponent.h" />
     <ClInclude Include="Game\Components\InputCameraComponent.h" />
     <ClInclude Include="Game\Components\MeshRenderer.h" />
@@ -283,6 +291,11 @@
     <ClInclude Include="Game\Graphics\DefaultMesh\DefaultSphere.h" />
     <ClInclude Include="Game\Graphics\Mesh.h" />
     <ClInclude Include="Game\Graphics\RenderObject.h" />
+    <ClInclude Include="Game\ThirdParty\Textures\DDS.h" />
+    <ClInclude Include="Game\ThirdParty\Textures\DDSTextureLoader.h" />
+    <ClInclude Include="Game\ThirdParty\Textures\pch.h" />
+    <ClInclude Include="Game\ThirdParty\Textures\WICTextureLoader.h" />
+    <ClInclude Include="Game\ThirdParty\WICTextureLoader.h" />
     <ClInclude Include="Game\Window\Components\DebugWindowText.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\GameHandle.h" />
@@ -301,9 +314,10 @@
     <ClInclude Include="Game\Components\KatamariMovement.h" />
     <ClInclude Include="Game\Components\KatamariObject.h" />
     <ClInclude Include="Game\Components\KatamariObjectCapture.h" />
+    <ClInclude Include="Game\Graphics\Tools\TextureImporter.h" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="Game\3rdParty\Input\Delegates.natvis" />
+    <Natvis Include="Game\ThirdParty\Input\Delegates.natvis" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Libs\Any\assimp-vc140-mt.lib" />
