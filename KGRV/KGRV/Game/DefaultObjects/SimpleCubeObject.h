@@ -9,7 +9,7 @@ class SimpleCubeObject : public GameObject
 
 public:
 	SimpleCubeObject(GameHandle* handle, Shader* shader) : GameObject(handle) {
-		cubeMesh = new DefaultCube();
+		cubeMesh = new DefaultCube({.5f, .5f, .5f, 1.0f});
 		transform->scale = { 1, 1, 1, 1 };
 		this->shader = shader;
 		rendererComponent = new MeshRenderer((GameObject*)this, reinterpret_cast<Mesh*>(cubeMesh), shader);

@@ -36,6 +36,7 @@ int main()
 	Texture colorTex;
 	colorTex.InitFromColor(game.renderView->device.Get(), { 1.0f, 0.0f, 1.0f, 1.0f });
 	simpleTex.LoadFromFile(game.renderView->device.Get(), "./Textures/sampleTex.png");
+	simpleTex2.LoadFromFile(game.renderView->device.Get(), "./Textures/maxwell.jpg");
 
 	BaseCameraObject camera = BaseCameraObject(&game);
 	
@@ -54,6 +55,11 @@ int main()
 
 	SimpleKatamariObject testObj = SimpleKatamariObject(&game, &shader);
 	TexturedKatamariObject testObj2 = TexturedKatamariObject(&game, &texShader, "./Models/horse.fbx", .5f, .01f, &simpleTex);
+	TexturedKatamariObject maxwellHorse = TexturedKatamariObject(&game, &texShader, "./Models/horse.fbx", .5f, .01f, &simpleTex2);
+	TexturedKatamariObject maxwell = TexturedKatamariObject(&game, &texShader, "./Models/maxwell.fbx", .5f, .0005f, &simpleTex2);
+	TexturedKatamariObject maxwellSamle = TexturedKatamariObject(&game, &texShader, "./Models/maxwell.fbx", .5f, .0005f, &simpleTex);
+	TexturedKatamariObject ballon = TexturedKatamariObject(&game, &texShader, "./Models/ballon.fbx", .5f, .1f, &simpleTex);
+	TexturedKatamariObject maxwellBallon = TexturedKatamariObject(&game, &texShader, "./Models/ballon.fbx", .5f, .1f, &simpleTex2);
 	SimpleKatamariObject testObj3 = SimpleKatamariObject(&game, &shader);
 	TexturedKatamariObject testObj4 = TexturedKatamariObject(&game, &texShader, "", .5f, 1.0f, &simpleTex);
 
@@ -69,6 +75,14 @@ int main()
 	testObj2.transform->position = { -10.0f, 0.5f, -3.0f };
 	testObj3.transform->position = { 5.0f, 1.0f, 10.0f };
 	testObj4.transform->position = { 0.0f, 1.0f, 10.0f };
+	maxwell.transform->position = { 2.0f, 1.0f, 3.0f };
+
+	maxwellHorse.transform->position = { 10.0f, 1.0f, 10.0f };
+	maxwellBallon.transform->position = { -10.0f, 1.0f, -10.0f };
+	maxwellSamle.transform->position = { 10.0f, 1.0f, -10.0f };
+
+
+	ballon.transform->position = { 5.0f, 1.0f, 5.0f };
 
 
 	//RotateAroundComponent rotComponent((GameObject*)&cube2, (GameObject*) &CentralPlanet, { 1.0f, 0.0f, 0.0f }, { 0.0f, 3.0f, 0.0f }, 3.14159f);
@@ -81,6 +95,12 @@ int main()
 	game.loadedScene->AddObject(&CentralPlanet);
 	game.loadedScene->AddObject(&movingBall);
 	game.loadedScene->AddObject(movingBall.view);
+	game.loadedScene->AddObject(movingBall.view1);
+	game.loadedScene->AddObject(movingBall.view2);
+	game.loadedScene->AddObject(movingBall.view3);
+	game.loadedScene->AddObject(movingBall.view4);
+	game.loadedScene->AddObject(movingBall.view5);
+	game.loadedScene->AddObject(movingBall.view6);
 	game.loadedScene->AddObject(&testObj);
 	game.loadedScene->AddObject(testObj.view);
 	game.loadedScene->AddObject(&testObj2);
@@ -89,6 +109,18 @@ int main()
 	game.loadedScene->AddObject(testObj3.view);
 	game.loadedScene->AddObject(&testObj4);
 	game.loadedScene->AddObject(testObj4.view);
+	game.loadedScene->AddObject(&maxwell);
+	game.loadedScene->AddObject(&ballon);
+	game.loadedScene->AddObject(maxwell.view);
+	game.loadedScene->AddObject(ballon.view);
+
+
+	game.loadedScene->AddObject(&maxwellHorse);
+	game.loadedScene->AddObject(maxwellHorse.view);
+	game.loadedScene->AddObject(&maxwellBallon);
+	game.loadedScene->AddObject(maxwellBallon.view);
+	game.loadedScene->AddObject(&maxwellSamle);
+	game.loadedScene->AddObject(maxwellSamle.view);
 //	game.loadedScene->AddObject(&cube3);
 
 	//	DefaultRectangle rectangleMesh = DefaultRectangle();
