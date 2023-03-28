@@ -108,12 +108,6 @@
     <ClCompile Include="Game\Graphics\Tools\FbxMeshImporter.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Game\ThirdParty\Textures\DDSTextureLoader.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\ThirdParty\Textures\WICTextureLoader.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Game\ThirdParty\DDSTextureLoader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -130,6 +124,15 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Game\Assets\Texture.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Graphics\Shaders\TextureLightedShader.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\Renderers\LightedTextureMeshRenderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\Light\DirectionLight.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -561,6 +564,24 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Game\DefaultObjects\TexturedKatamariBall.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Graphics\Shaders\TextureLightedShader.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\Renderers\LightedTextureMeshRenderer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\Renderers\ConstantBuffers.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\Light\DirectionLight.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\DirectionLightObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\TexturedLightedKatamariBall.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Components\Light\DirectionLight.cpp" />
     <ClCompile Include="Game\Graphics\Tools\FbxMeshImporter.cpp" />
     <ClCompile Include="Game\Components\CameraPointsAttachment.cpp" />
     <ClCompile Include="Game\ThirdParty\DDSTextureLoader.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Game\Components\KatamariMovement.cpp" />
     <ClCompile Include="Game\Components\KatamariObject.cpp" />
     <ClCompile Include="Game\Components\KatamariObjectCapture.cpp" />
+    <ClCompile Include="Game\Components\Renderers\LightedTextureMeshRenderer.cpp" />
     <ClCompile Include="MySuper3DApp.cpp" />
     <ClCompile Include="Game\Graphics\Shader.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FS %(AdditionalOptions)</AdditionalOptions>
@@ -174,6 +176,7 @@
     <ClCompile Include="Game\Graphics\Shaders\TextureShader.cpp" />
     <ClCompile Include="Game\Components\Renderers\TextureMeshRenderer.cpp" />
     <ClCompile Include="Game\Assets\Texture.cpp" />
+    <ClCompile Include="Game\Graphics\Shaders\TextureLightedShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\color4.inl" />
@@ -264,7 +267,11 @@
     <ClInclude Include="assimp\version.h" />
     <ClInclude Include="assimp\Vertex.h" />
     <ClInclude Include="assimp\XMLTools.h" />
+    <ClInclude Include="Game\Components\Light\DirectionLight.h" />
+    <ClInclude Include="Game\Components\Renderers\ConstantBuffers.h" />
+    <ClInclude Include="Game\DefaultObjects\DirectionLightObject.h" />
     <ClInclude Include="Game\DefaultObjects\TexturedKatamariBall.h" />
+    <ClInclude Include="Game\DefaultObjects\TexturedLightedKatamariBall.h" />
     <ClInclude Include="Game\Graphics\DefaultMesh\DefaultTexturedCube.h" />
     <ClInclude Include="Game\ThirdParty\DDS.h" />
     <ClInclude Include="Game\ThirdParty\DDSTextureLoader.h" />
@@ -323,6 +330,8 @@
     <ClInclude Include="Game\Graphics\Shaders\TextureShader.h" />
     <ClInclude Include="Game\Components\Renderers\TextureMeshRenderer.h" />
     <ClInclude Include="Game\Assets\Texture.h" />
+    <ClInclude Include="Game\Graphics\Shaders\TextureLightedShader.h" />
+    <ClInclude Include="Game\Components\Renderers\LightedTextureMeshRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="Game\ThirdParty\Input\Delegates.natvis" />

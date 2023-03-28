@@ -13,6 +13,7 @@ struct PS_IN
 cbuffer TransformConstantBuffer : register(b0)
 {
 	float4x4 mat;
+	float4x4 normalMat;
 };
 
 

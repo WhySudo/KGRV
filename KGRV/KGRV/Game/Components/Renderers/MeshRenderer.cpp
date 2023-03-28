@@ -1,6 +1,7 @@
 #include "MeshRenderer.h"
 #include "../CameraComponent.h"
 #include <iostream>
+#include "ConstantBuffers.h"
 void MeshRenderer::Draw()
 {
 	DrawObject(
@@ -20,15 +21,25 @@ void MeshRenderer::UpdateDrawMatrix() {
 	if (camera == nullptr)
 		return;
 	DirectX::XMMATRIX modelMatrix = gameObject->transform->LocalToGlobalMatrix();
-	
-	//data.matrix = DirectX::XMMatrixScaling(gameObject->transform->scale.x, gameObject->transform->scale.y, gameObject->transform->scale.z) *
-	//DirectX::XMMatrixTranslation(gameObject->transform->position.x, gameObject->transform->position.y, gameObject->transform->position.z);
 	data.matrix = modelMatrix * camera->ViewMatrix() * camera->ProjectionMatrix();
+	data.normalMatrix = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, data.matrix));
 	data.matrix = DirectX::XMMatrixTranspose(data.matrix);
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT result = gameObject->gameHandle->renderView->context->Map(transformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	CopyMemory(mappedResource.pData, &data, sizeof(TransformConstantBuffer));
+	data.normalMatrix = DirectX::XMMatrixTranspose(data.normalMatrix);
+	D3D11_MAPPED_SUBRESOURCE transformMappedBufferData;
+	HRESULT result = gameObject->gameHandle->renderView->context->Map(transformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &transformMappedBufferData);
+	CopyMemory(transformMappedBufferData.pData, &data, sizeof(TransformConstantBuffer));
 	gameObject->gameHandle->renderView->context->Unmap(transformBuffer, 0);
+	UpdateConstantBuffers();
+}
+
+void MeshRenderer::InitBuffers(ID3D11Device* device)
+{
+	transformBuffer = CreateTransformBuffer(device);
+}
+
+void MeshRenderer::UpdateConstantBuffers()
+{
+	
 }
 
 ID3D11Buffer* MeshRenderer::CreateTransformBuffer(ID3D11Device* device) {
@@ -65,7 +76,7 @@ bool MeshRenderer::Initialization()
 
 
 	//device->CreateDepthStencilState(&dsDesc, &pDSState);
-	transformBuffer = CreateTransformBuffer(device);
+	InitBuffers(device);
 	drawShader->Initalize(device);
 	return true;
 }

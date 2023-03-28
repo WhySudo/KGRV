@@ -86,10 +86,6 @@ protected:
 	void RemoveChild(Transform* child);
 	void AddChild(Transform* child);
 };
-struct TransformConstantBuffer
-{
-	DirectX::XMMATRIX matrix;
-};
 
 
 
