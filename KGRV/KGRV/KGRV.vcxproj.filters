@@ -584,6 +584,9 @@
     <ClInclude Include="Game\DefaultObjects\TexturedLightedKatamariBall.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\SimpleLightedTexturedCube.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="Game\ThirdParty\Input\Delegates.natvis" />

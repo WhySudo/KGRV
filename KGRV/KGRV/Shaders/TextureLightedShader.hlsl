@@ -41,6 +41,7 @@ PS_IN VSMain(VS_IN input)
 	PS_IN output = (PS_IN)0;
 
 	output.pos = mul(input.pos, mat);
+	//output.pos = input.pos;
 	output.normal = input.normal;
 	output.textureCoordinate = input.textureCoordinate;
 
@@ -50,7 +51,6 @@ PS_IN VSMain(VS_IN input)
 float4 PSMain(PS_IN input) : SV_Target
 {
 	float3 normal = normalize(mul(input.normal.xyz, mat));
-
 	float3 lightBackward = normalize(-lightDirection.xyz);
 	float3 lightForward = normalize(lightDirection.xyz);
 	float3 toCamera = normalize(cameraPosition.xyz - input.pos.xyz);

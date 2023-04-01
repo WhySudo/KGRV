@@ -270,6 +270,7 @@
     <ClInclude Include="Game\Components\Light\DirectionLight.h" />
     <ClInclude Include="Game\Components\Renderers\ConstantBuffers.h" />
     <ClInclude Include="Game\DefaultObjects\DirectionLightObject.h" />
+    <ClInclude Include="Game\DefaultObjects\SimpleLightedTexturedCube.h" />
     <ClInclude Include="Game\DefaultObjects\TexturedKatamariBall.h" />
     <ClInclude Include="Game\DefaultObjects\TexturedLightedKatamariBall.h" />
     <ClInclude Include="Game\Graphics\DefaultMesh\DefaultTexturedCube.h" />

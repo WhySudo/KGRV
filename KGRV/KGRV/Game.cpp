@@ -13,6 +13,7 @@
 #include "Game/DefaultObjects/TexturedKatamariBall.h"
 #include "Game/DefaultObjects/TexturedLightedKatamariBall.h"
 #include "Game/DefaultObjects/DirectionLightObject.h"
+#include "Game/DefaultObjects/SimpleLightedTexturedCube.h"
 #include "Game/Graphics/Shaders/TextureShader.h"
 #include "Game/Assets/Texture.h"
 #include <iostream>
@@ -23,23 +24,17 @@ int main()
 	Shader shader(L"./Shaders/MyVeryFirstShader.hlsl");
 	TextureShader texShader = TextureShader();
 	TextureLightedShader texLightedShader = TextureLightedShader();
-
-
-	/*DirectX::XMFLOAT4 trianglePoints[6] = {
-		DirectX::XMFLOAT4(0.8f, 0.9f, 0.5f, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-		DirectX::XMFLOAT4(0.9f, 0.9f, 0.5f, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-		DirectX::XMFLOAT4(0.8f, 0.8f, 0.5f, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-	};
-	int triangleTriangles[] = { 0,1,2 };
-	*/
 	shader.Initalize(game.renderView->device.Get());
 	texShader.Initalize(game.renderView->device.Get());
 	Texture simpleTex;
 	Texture simpleTex2;
 	Texture colorTex;
 	Texture colorTex2;
+	Texture planeColorTex;
 	colorTex.InitFromColor(game.renderView->device.Get(), { 1.0f, 1.0f, 1.0f, 1.0f });
 	colorTex2.InitFromColor(game.renderView->device.Get(), { 0.5f, 1.0f, 0.0f, 1.0f });
+	planeColorTex.InitFromColor(game.renderView->device.Get(), { 0.5f, 0.5f, 0.5f, 1.0f });
+
 	simpleTex.LoadFromFile(game.renderView->device.Get(), "./Textures/sampleTex.png");
 	simpleTex2.LoadFromFile(game.renderView->device.Get(), "./Textures/maxwell.jpg");
 
@@ -47,20 +42,10 @@ int main()
 	DirectionLightObject lightSource = DirectionLightObject(&game);
 	lightSource.transform->position = { 50.0f, 50.0f, 50.0f };
 	lightSource.transform->LookAt({ 0.0f, 0.0f, 0.0f });
-	
-	//SimpleBallObject ball = SimpleBallObject(&game, &shader);
+	SimpleLightedTexturedCube CentralPlanet = SimpleLightedTexturedCube(&game, &texLightedShader, &planeColorTex);
 
 
-	//SimplePlayerPlatform left = SimplePlayerPlatform(&game, &shader, {-1, 0}, { 1, 0, 0, 1 }, { 0.2, 0.5, 1, 1}, Keys::Up, Keys::Down, {-0.74, 0.74});
-	//SimplePlayerPlatform right = SimplePlayerPlatform(&game, &shader, { 1, 0 }, { -1, 0, 0, 1 }, { 0.2, 0.5, 1, 1 }, Keys::W, Keys::S, { -0.74, 0.74 });
-	
-	
-	//SimpleWallObject wall3 = SimpleWallObject(&game, &shader, { 0, -1 }, { 0, 1.06, 0, 1 }, { 2, 0.2, 1, 1 });
-	//SimpleWallObject wall4 = SimpleWallObject(&game, &shader, { 0, 1 }, { 0, -1.06, 0, 1 }, { 2, 0.2, 1, 1 });
-
-	SimpleCubeObject CentralPlanet = SimpleCubeObject(&game, &shader);
 	KatamariBall movingBall = KatamariBall(&game, &shader);
-
 	SimpleKatamariObject testObj = SimpleKatamariObject(&game, &shader);
 	TexturedKatamariObject testObj2 = TexturedKatamariObject(&game, &texShader, "./Models/horse.fbx", .5f, .01f, &simpleTex);
 	TexturedKatamariObject maxwellHorse = TexturedKatamariObject(&game, &texShader, "./Models/horse.fbx", .5f, .01f, &simpleTex2);
