@@ -1,6 +1,6 @@
 #include "LightedTextureMeshRenderer.h"
 #include "ConstantBuffers.h"
-#include "../Light/DirectionLight.h"
+#include "../Light/Light.h"
 #include "../CameraComponent.h"
 void LightedTextureMeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState)
 {
@@ -36,42 +36,8 @@ void LightedTextureMeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11
 
 void LightedTextureMeshRenderer::UpdateConstantBuffers()
 {
-	LightConstantBuffer lightData = {};
-
-	MaterialConstantBuffer materialData = {};
-	materialData.ambientCoef = phongMaterialData.ambient;
-	materialData.difuseCoef = phongMaterialData.difuse;
-	materialData.specularAbsorptionCoef = phongMaterialData.specularAbsorption;
-	materialData.specularShininessCoef = phongMaterialData.specularShininess;
-	auto directionLightInstance = gameObject->gameHandle->loadedScene->directionLight;
-	auto cameraInstance = gameObject->gameHandle->loadedScene->currentCamera;
-	if (directionLightInstance != nullptr)
-	{
-
-		auto lightTransform = directionLightInstance->gameObject->transform;
-		auto matrix = lightTransform->LocalToGlobalRotationMatrix() * cameraInstance->ViewMatrix() * cameraInstance->ProjectionMatrix();
-		auto normalMatrix = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, matrix));
-
-		lightData.lightDirection = (Vector4)XMVector3Transform(lightTransform->forward, matrix);
-
-		auto cameraTransform = cameraInstance->gameObject->transform;
-		matrix = cameraTransform->LocalToGlobalMatrix() * cameraInstance->ViewMatrix() * cameraInstance->ProjectionMatrix();
-		lightData.cameraPosition = (Vector4)XMVector3Transform(cameraInstance->gameObject->transform->position, matrix);
-
-		lightData.colorIntencity = Vector4(0, 0, 0, 1) + (Vector4)directionLightInstance->ColorIntencity();
-
-	}
-
-	D3D11_MAPPED_SUBRESOURCE materialDataMappedResourse;
-	HRESULT hr = gameObject->gameHandle->renderView->context->Map(materialBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &materialDataMappedResourse);
-	CopyMemory(materialDataMappedResourse.pData, &materialData, sizeof(MaterialConstantBuffer));
-	gameObject->gameHandle->renderView->context->Unmap(materialBuffer, 0);
-
-	D3D11_MAPPED_SUBRESOURCE lightDataMappedResource;
-	hr = gameObject->gameHandle->renderView->context->Map(lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &lightDataMappedResource);
-	CopyMemory(lightDataMappedResource.pData, &lightData, sizeof(LightConstantBuffer));
-	gameObject->gameHandle->renderView->context->Unmap(lightBuffer, 0);
-
+	UpdateMaterialBuffer();
+	UpdateLightBuffer();
 }
 
 void LightedTextureMeshRenderer::InitBuffers(ID3D11Device* device)
@@ -79,6 +45,51 @@ void LightedTextureMeshRenderer::InitBuffers(ID3D11Device* device)
 	MeshRenderer::InitBuffers(device);
 	lightBuffer = CreateLightBuffer(device);
 	materialBuffer = CreateMaterialBuffer(device);
+}
+
+void LightedTextureMeshRenderer::UpdateLightBuffer()
+{
+
+	auto lightInstance = gameObject->gameHandle->loadedScene->light;
+	auto cameraInstance = gameObject->gameHandle->loadedScene->currentCamera;
+	LightConstantBuffer lightData = {};
+	if (lightInstance != nullptr)
+	{
+		
+		auto lightTransform = lightInstance->gameObject->transform;
+		auto matrix = lightTransform->LocalToGlobalRotationMatrix();// *cameraInstance->ViewMatrix()* cameraInstance->ProjectionMatrix();
+		lightData.lightDirection = (Vector4)lightTransform->forward; // XMVector3Transform(lightTransform->forward, matrix);
+		Vector3 tempDir;
+		//Vector3::TransformNormal((Vector3)lightData.lightDirection, matrix, tempDir);
+		//lightData.lightDirection = (Vector4)tempDir;
+
+//		auto normalMatrix = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, matrix));
+
+		auto cameraTransform = cameraInstance->gameObject->transform;
+		matrix = cameraTransform->LocalToGlobalMatrix() * cameraInstance->ViewMatrix() * cameraInstance->ProjectionMatrix();
+		lightData.cameraPosition = (Vector4)cameraInstance->gameObject->transform->position;//(Vector4)XMVector3Transform(cameraInstance->gameObject->transform->position, matrix);
+
+		lightData.colorIntencity = Vector4(0, 0, 0, 1) + (Vector4)lightInstance->ColorIntencity();
+
+	}
+	D3D11_MAPPED_SUBRESOURCE lightDataMappedResource;
+	auto hr = gameObject->gameHandle->renderView->context->Map(lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &lightDataMappedResource);
+	CopyMemory(lightDataMappedResource.pData, &lightData, sizeof(LightConstantBuffer));
+	gameObject->gameHandle->renderView->context->Unmap(lightBuffer, 0);
+}
+
+void LightedTextureMeshRenderer::UpdateMaterialBuffer()
+{
+	MaterialConstantBuffer materialData = {};
+	materialData.ambientCoef = phongMaterialData.ambient;
+	materialData.difuseCoef = phongMaterialData.difuse;
+	materialData.specularAbsorptionCoef = phongMaterialData.specularAbsorption;
+	materialData.specularShininessCoef = phongMaterialData.specularShininess;
+
+	D3D11_MAPPED_SUBRESOURCE materialDataMappedResourse;
+	HRESULT hr = gameObject->gameHandle->renderView->context->Map(materialBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &materialDataMappedResourse);
+	CopyMemory(materialDataMappedResourse.pData, &materialData, sizeof(MaterialConstantBuffer));
+	gameObject->gameHandle->renderView->context->Unmap(materialBuffer, 0);
 }
 
 ID3D11Buffer* LightedTextureMeshRenderer::CreateLightBuffer(ID3D11Device* device)

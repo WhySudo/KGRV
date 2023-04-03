@@ -132,7 +132,16 @@
     <ClCompile Include="Game\Components\Renderers\LightedTextureMeshRenderer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Components\Light\DirectionLight.cpp">
+    <ClCompile Include="Game\Graphics\Shaders\ShadowShader.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\Renderers\ShadowMeshRenderer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Components\Light\Light.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Graphics\Shaders\DepthShader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -575,9 +584,6 @@
     <ClInclude Include="Game\Components\Renderers\ConstantBuffers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Components\Light\DirectionLight.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Game\DefaultObjects\DirectionLightObject.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -585,6 +591,24 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Game\DefaultObjects\SimpleLightedTexturedCube.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Graphics\Shaders\ShadowShader.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\Renderers\ShadowMeshRenderer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Components\Light\Light.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\SimpleShadowObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\DefaultObjects\SimpleShadowKatamariObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Graphics\Shaders\DepthShader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

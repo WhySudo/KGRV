@@ -9,13 +9,16 @@ struct PS_IN
 {
 	float4 pos : SV_POSITION;
 	float4 normal :NORMAL0;
-	float2 textureCoordinate : TEXCOORD;
+	float2 textureCoordinate : TEXCOORD; 
+	float4 lightPos : TEXCOORD2;
 };
 
 cbuffer TransformConstantBuffer : register(b0)
 {
 	float4x4 mat;
-	float4x4 normalMat;
+	float4x4 normalMat;	
+	float4x4 worldViewProj;	
+	float4x4 cameraViewProj;
 };
 
 cbuffer LightConstantBuffer : register(b1)
@@ -23,6 +26,7 @@ cbuffer LightConstantBuffer : register(b1)
 	float4 cameraPosition;
 	float4 lightDirection;
 	float4 colorIntencity;
+	float4x4 lightMat;
 };
 
 cbuffer MaterialConstantBuffer : register(b2)
@@ -34,7 +38,37 @@ cbuffer MaterialConstantBuffer : register(b2)
 };
 
 Texture2D objTexture : TEXTURE: register(t0);
+Texture2D depthMapTexture : TEXTURE: register(t1);
 SamplerState objSamplerState : SAMPLER: register(s0);
+
+float GetDepth(float4 pos) : SV_Target
+{ 
+	float depth = pos.z / pos.w;
+	return depth;
+}
+
+
+float IsLighted(float4 lightViewPosition, float4 pos)
+{
+	float4 fragPosLightSpace = lightViewPosition;
+	// perform perspective divide
+	float3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+	// transform to [0,1] range
+	projCoords = projCoords * 0.5 + 0.5;
+	// get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+	//float closestDepth = depthTexture.Sample(objSamplerState, projCoords.xy).r;
+	float closestDepth = GetDepth(pos);
+	// get depth of current fragment from light's perspective
+	float currentDepth = fragPosLightSpace.z / fragPosLightSpace.w * 0.5 + 0.5;
+
+	return closestDepth;
+
+	// check whether current frag pos is in shadow
+	float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+
+	return shadow;
+}
+
 
 
 PS_IN VSMain(VS_IN input)
@@ -48,6 +82,7 @@ PS_IN VSMain(VS_IN input)
 	output.normal = mul(input.normal, normalMat);
 	//output.normal = input.normal;
 	output.textureCoordinate = input.textureCoordinate;
+	output.lightPos = mul(output.pos, lightMat);
 
 	return output;
 }
@@ -75,11 +110,16 @@ float3 GetLightning(PS_IN input) {
 float4 PSMain(PS_IN input) : SV_Target
 {
 	//return float4(input.normal.xyz, 1.0f);
-	
-	
+
+
 	float4 setPixelColor = objTexture.Sample(objSamplerState, input.textureCoordinate);
 	float3 lighting = GetLightning(input);
-	return float4(lighting, 1) * setPixelColor;
-
+	float isLigthed = IsLighted(input.lightPos, input.pos);
+	if (isLigthed) {
+		return float4(lighting, 1) * setPixelColor;
+	}
+	else {
+		return float4(0, 0, 0, 1);
+	}
 }
 

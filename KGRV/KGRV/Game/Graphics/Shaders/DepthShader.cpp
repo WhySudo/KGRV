@@ -1,4 +1,4 @@
-#include "TextureLightedShader.h"
+#include "DepthShader.h"
 #include <wrl.h>
 #include "../../Window/GameWindow.h"
 #include <iostream>
@@ -7,12 +7,13 @@
 #include <d3dcompiler.h>
 #include <iostream>
 using namespace std;
-HRESULT TextureLightedShader::Initalize(ID3D11Device* device)
+HRESULT DepthShader::Initalize(ID3D11Device* device)
 {
+
 	this->device = device;
 	HRESULT res;
 
-	cout << "compile texture lighted shader" << endl;
+	cout << "compile depth shader" << endl;
 	res = D3DCompileFromFile(shaderSource,
 		nullptr /*macros*/,
 		nullptr /*include*/,

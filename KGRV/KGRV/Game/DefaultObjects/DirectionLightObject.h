@@ -1,18 +1,16 @@
 #pragma once
 #include "../GameObject.h"
-#include "../Components/Light/DirectionLight.h"
+#include "../Components/Light/Light.h"
 class DirectionLightObject : public GameObject {
 public:
 	DirectionLightObject(GameHandle* handle, Vector3 Color = {1.0f, 1.0f, 1.0f}, float intencity = 1.0f) : GameObject(handle) {
-		lightComponent = new DirectionLight((GameObject*)this);
-		lightComponent->lightColor = Color;
-		lightComponent->inencity = intencity;
-		gameComponents.push_back(lightComponent);
+		light = new Light((GameObject*)this);
+		light->lightColor = Color;
+		light->inencity = intencity;
+		gameComponents.push_back(light);
 	}
 	~DirectionLightObject() {
-		delete lightComponent;
+		delete light;
 	}
-
-	DirectionLight* lightComponent;
-
+	Light* light;
 };

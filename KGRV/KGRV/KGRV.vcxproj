@@ -133,7 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game\Components\Light\DirectionLight.cpp" />
+    <ClCompile Include="Game\Graphics\Shaders\DepthShader.cpp" />
     <ClCompile Include="Game\Graphics\Tools\FbxMeshImporter.cpp" />
     <ClCompile Include="Game\Components\CameraPointsAttachment.cpp" />
     <ClCompile Include="Game\ThirdParty\DDSTextureLoader.cpp" />
@@ -161,6 +161,7 @@
     <ClCompile Include="Game\Components\KatamariObject.cpp" />
     <ClCompile Include="Game\Components\KatamariObjectCapture.cpp" />
     <ClCompile Include="Game\Components\Renderers\LightedTextureMeshRenderer.cpp" />
+    <ClCompile Include="Game\Components\Light\Light.cpp" />
     <ClCompile Include="MySuper3DApp.cpp" />
     <ClCompile Include="Game\Graphics\Shader.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/FS %(AdditionalOptions)</AdditionalOptions>
@@ -177,6 +178,8 @@
     <ClCompile Include="Game\Components\Renderers\TextureMeshRenderer.cpp" />
     <ClCompile Include="Game\Assets\Texture.cpp" />
     <ClCompile Include="Game\Graphics\Shaders\TextureLightedShader.cpp" />
+    <ClCompile Include="Game\Graphics\Shaders\ShadowShader.cpp" />
+    <ClCompile Include="Game\Components\Renderers\ShadowMeshRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assimp\color4.inl" />
@@ -267,9 +270,11 @@
     <ClInclude Include="assimp\version.h" />
     <ClInclude Include="assimp\Vertex.h" />
     <ClInclude Include="assimp\XMLTools.h" />
-    <ClInclude Include="Game\Components\Light\DirectionLight.h" />
+    <ClInclude Include="Game\Graphics\Shaders\DepthShader.h" />
     <ClInclude Include="Game\Components\Renderers\ConstantBuffers.h" />
     <ClInclude Include="Game\DefaultObjects\DirectionLightObject.h" />
+    <ClInclude Include="Game\DefaultObjects\SimpleShadowKatamariObject.h" />
+    <ClInclude Include="Game\DefaultObjects\SimpleShadowObject.h" />
     <ClInclude Include="Game\DefaultObjects\SimpleLightedTexturedCube.h" />
     <ClInclude Include="Game\DefaultObjects\TexturedKatamariBall.h" />
     <ClInclude Include="Game\DefaultObjects\TexturedLightedKatamariBall.h" />
@@ -333,6 +338,9 @@
     <ClInclude Include="Game\Assets\Texture.h" />
     <ClInclude Include="Game\Graphics\Shaders\TextureLightedShader.h" />
     <ClInclude Include="Game\Components\Renderers\LightedTextureMeshRenderer.h" />
+    <ClInclude Include="Game\Graphics\Shaders\ShadowShader.h" />
+    <ClInclude Include="Game\Components\Renderers\ShadowMeshRenderer.h" />
+    <ClInclude Include="Game\Components\Light\Light.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="Game\ThirdParty\Input\Delegates.natvis" />

@@ -6,6 +6,12 @@ void GameObject::Draw()
 		component->Draw();
 	}
 }
+void GameObject::BeforeDraw()
+{
+	for (auto component : gameComponents) {
+		component->BeforeDraw();
+	}
+}
 void GameObject::PhysicsUpdate(float timeDeltaTime) {
 	for (auto component : gameComponents) {
 		component->PhysicsUpdate(timeDeltaTime);

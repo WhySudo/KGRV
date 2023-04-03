@@ -15,6 +15,7 @@ public:
 	GameHandle* gameHandle;
 	Transform* transform;
 	void Draw();
+	void BeforeDraw();
 	void Update(float timeDeltaTime);
 	void PhysicsUpdate(float timeDeltaTime);
 	void Initialize();

@@ -107,6 +107,9 @@ HRESULT RenderView::Initalize(){
 }
 
 void RenderView::UpdateComponentView() {
+	for (auto object : game->loadedScene->SceneObjects) {
+		object->BeforeDraw();
+	}
 	context->ClearState();
 	context->RSSetState(rastState);
 	D3D11_VIEWPORT viewport = {};

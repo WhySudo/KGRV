@@ -51,6 +51,22 @@ public:
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
 	D3D_PRIMITIVE_TOPOLOGY topology;
 
+	bool initialized = false;
+	bool textured = false;
+	void Legacy_CopyPoints() {
+		if (!textured) {
+			for (int i = 0; i < points.size(); i += 2)
+			{
+				DirectX::XMFLOAT3 pos = {0, 0, 0};
+				pos.x = points[i].x;
+				pos.y = points[i].y;
+				pos.z = points[i].z;
+				vertex.push_back(Vertex(pos));
+			}
+		}
+	}
+
+
 	virtual void InitalizeMesh(bool useVertexData = false) {
 		textured = useVertexData;
 		vertexBufDesc = {};
@@ -114,11 +130,12 @@ public:
 		dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 		dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
-		this->topology = D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		this->topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		initialized = true;
+		Legacy_CopyPoints();
 	}
-	bool initialized = false;
-	bool textured = false;
+
+	
 	~Mesh() {
 		//if (points != nullptr) {
 		//	delete points;

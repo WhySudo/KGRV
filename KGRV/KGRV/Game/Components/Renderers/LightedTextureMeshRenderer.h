@@ -20,8 +20,10 @@ protected:
 	void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState) override;
 	void UpdateConstantBuffers() override;
 	void InitBuffers(ID3D11Device* device) override;
-	ID3D11Buffer* CreateLightBuffer(ID3D11Device* device);
-	ID3D11Buffer* CreateMaterialBuffer(ID3D11Device* device);
+	virtual void UpdateLightBuffer();
+	virtual void UpdateMaterialBuffer();
+	virtual ID3D11Buffer* CreateLightBuffer(ID3D11Device* device);
+	virtual ID3D11Buffer* CreateMaterialBuffer(ID3D11Device* device);
 	ID3D11Buffer* lightBuffer;
 	ID3D11Buffer* materialBuffer;
 

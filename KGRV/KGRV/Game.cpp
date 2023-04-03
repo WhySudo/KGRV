@@ -15,6 +15,8 @@
 #include "Game/DefaultObjects/DirectionLightObject.h"
 #include "Game/DefaultObjects/SimpleLightedTexturedCube.h"
 #include "Game/Graphics/Shaders/TextureShader.h"
+#include "Game/Graphics/Shaders/ShadowShader.h"
+#include "Game/DefaultObjects/SimpleShadowObject.h"
 #include "Game/Assets/Texture.h"
 #include <iostream>
 int main()
@@ -24,15 +26,20 @@ int main()
 	Shader shader(L"./Shaders/MyVeryFirstShader.hlsl");
 	TextureShader texShader = TextureShader();
 	TextureLightedShader texLightedShader = TextureLightedShader();
+	ShadowShader shadowShader = ShadowShader();
+	DepthShader depthShader = DepthShader();
 	shader.Initalize(game.renderView->device.Get());
 	texShader.Initalize(game.renderView->device.Get());
+	depthShader.Initalize(game.renderView->device.Get());
 	Texture simpleTex;
 	Texture simpleTex2;
 	Texture colorTex;
 	Texture colorTex2;
+	Texture colorTex3;
 	Texture planeColorTex;
 	colorTex.InitFromColor(game.renderView->device.Get(), { 1.0f, 1.0f, 1.0f, 1.0f });
 	colorTex2.InitFromColor(game.renderView->device.Get(), { 0.5f, 1.0f, 0.0f, 1.0f });
+	colorTex3.InitFromColor(game.renderView->device.Get(), { 0.0f, 1.0f, 0.7f, 1.0f });
 	planeColorTex.InitFromColor(game.renderView->device.Get(), { 0.5f, 0.5f, 0.5f, 1.0f });
 
 	simpleTex.LoadFromFile(game.renderView->device.Get(), "./Textures/sampleTex.png");
@@ -40,16 +47,24 @@ int main()
 
 	BaseCameraObject camera = BaseCameraObject(&game);
 	DirectionLightObject lightSource = DirectionLightObject(&game);
-	lightSource.transform->position = { 50.0f, 50.0f, 50.0f };
+
+	float aspect = game.gameWindow->width / game.gameWindow->height;
+	float zoom = 20;
+	
+	lightSource.light->SetOrthographicProjectionValues(aspect * zoom, aspect * zoom, 0.001, 1000);
+	lightSource.light->depthShader = &depthShader;
+
+	//lightSource.transform->position = { 50.0f, 50.0f, 50.0f };
+	lightSource.transform->position = { 0.0f, 10.0f, 0.0f };
 	lightSource.transform->LookAt({ 0.0f, 0.0f, 0.0f });
-	SimpleLightedTexturedCube CentralPlanet = SimpleLightedTexturedCube(&game, &texLightedShader, &planeColorTex);
+	SimpleShadowObject CentralPlanet = SimpleShadowObject(&game, &shadowShader, &planeColorTex);
 
 
 	KatamariBall movingBall = KatamariBall(&game, &shader);
 	SimpleKatamariObject testObj = SimpleKatamariObject(&game, &shader);
-	TexturedKatamariObject testObj2 = TexturedKatamariObject(&game, &texShader, "./Models/horse.fbx", .5f, .01f, &simpleTex);
-	TexturedKatamariObject maxwellHorse = TexturedKatamariObject(&game, &texShader, "./Models/horse.fbx", .5f, .01f, &simpleTex2);
-	TexturedLightedKatamariObject lightColorHorse = TexturedLightedKatamariObject(&game, &texLightedShader, "./Models/maxwell.fbx", .5f, .0005f, &colorTex2);
+	TexturedKatamariObject testObj2 = TexturedKatamariObject(&game, &texShader, "./Models/horse_fix.fbx", .5f, .01f, &simpleTex);
+	TexturedKatamariObject maxwellHorse = TexturedKatamariObject(&game, &texShader, "./Models/horse_fix.fbx", .5f, .01f, &simpleTex2);
+	TexturedLightedKatamariObject lightColorHorse = TexturedLightedKatamariObject(&game, &texLightedShader, "./Models/maxwell_fix.fbx", .5f, .0005f, &colorTex2);
 	TexturedLightedKatamariObject lightHorse = TexturedLightedKatamariObject(&game, &texLightedShader, "", .5f, 1.0f, &colorTex);
 	lightHorse.rendererComponent->phongMaterialData.ambient = 0.23125;
 	lightHorse.rendererComponent->phongMaterialData.difuse = 0.2775;
@@ -63,9 +78,9 @@ int main()
 
 
 
-	TexturedKatamariObject maxwell = TexturedKatamariObject(&game, &texShader, "./Models/maxwell.fbx", .5f, .0005f, &simpleTex2);
-	TexturedLightedKatamariObject lightMaxwell = TexturedLightedKatamariObject(&game, &texLightedShader, "./Models/maxwell.fbx", .5f, .0005f, &simpleTex2);
-	TexturedKatamariObject maxwellSamle = TexturedKatamariObject(&game, &texShader, "./Models/maxwell.fbx", .5f, .0005f, &simpleTex);
+	TexturedKatamariObject maxwell = TexturedKatamariObject(&game, &texShader, "./Models/maxwell_fix.fbx", .5f, .0005f, &simpleTex2);
+	TexturedLightedKatamariObject lightMaxwell = TexturedLightedKatamariObject(&game, &texLightedShader, "./Models/horse_fix.fbx", .5f, 0.1f, &colorTex3);
+	TexturedKatamariObject maxwellSamle = TexturedKatamariObject(&game, &texShader, "./Models/maxwell_fix.fbx", .5f, .0005f, &simpleTex);
 	TexturedKatamariObject ballon = TexturedKatamariObject(&game, &texShader, "./Models/ballon.fbx", .5f, .1f, &simpleTex);
 	TexturedKatamariObject maxwellBallon = TexturedKatamariObject(&game, &texShader, "./Models/ballon.fbx", .5f, .1f, &simpleTex2);
 	SimpleKatamariObject testObj3 = SimpleKatamariObject(&game, &shader);
@@ -107,7 +122,7 @@ int main()
 	//cube2.gameComponents.push_back(&rotComponent);
 	
 	game.loadedScene->currentCamera = camera.GetCamera();
-	game.loadedScene->directionLight = lightSource.lightComponent;
+	game.loadedScene->light = lightSource.light;
 	XMFLOAT3 LookAt{ movingBall.transform->position.x, movingBall.transform->position.y, movingBall.transform->position.z };
 	camera.GetCamera()->LookAt(LookAt);
 	game.loadedScene->AddObject(&camera);
