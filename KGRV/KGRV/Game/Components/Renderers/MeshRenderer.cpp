@@ -13,6 +13,11 @@ void MeshRenderer::Draw()
 
 void MeshRenderer::Update(float deltaTime)
 {
+	UpdateDrawBuffersData();
+}
+
+void MeshRenderer::UpdateDrawBuffersData()
+{
 	UpdateDrawMatrix();
 	UpdateDepthBuffer();
 	UpdateConstantBuffers();

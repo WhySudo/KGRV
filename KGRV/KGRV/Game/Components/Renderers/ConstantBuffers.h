@@ -5,12 +5,16 @@ struct TransformConstantBuffer
 	DirectX::XMMATRIX normalMatrix;
 
 };
-
+struct PhongData {
+	float ambient = 0.05f;
+	float difuse = 0.01f;
+	float specularAbsorption = 0.5f;
+	float specularShininess = 32.0f;
+};
 struct TransformConstantBufferEx {
-
 	DirectX::XMMATRIX matrix;
-	DirectX::XMMATRIX normalMatrix;
 	DirectX::XMMATRIX worldViewProj;
+	DirectX::XMMATRIX normalMatrix;
 	DirectX::XMMATRIX cameraViewProj;
 };
 

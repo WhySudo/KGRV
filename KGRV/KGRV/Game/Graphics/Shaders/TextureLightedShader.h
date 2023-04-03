@@ -9,7 +9,7 @@ public:
 	TextureLightedShader(LPCWSTR shaderSource) : Shader(shaderSource) {
 
 	}
-	HRESULT Initalize(ID3D11Device* device) override;
+	virtual HRESULT Initalize(ID3D11Device* device) override;
 };
 
 

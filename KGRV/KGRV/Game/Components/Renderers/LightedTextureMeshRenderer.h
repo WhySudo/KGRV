@@ -1,13 +1,7 @@
 #pragma once
 #include "MeshRenderer.h"
 #include "../../Graphics/Shaders/TextureLightedShader.h"
-
-struct PhongData {
-	float ambient = 0.05f;
-	float difuse = 0.01f;
-	float specularAbsorption = 0.5f;
-	float specularShininess = 32.0f;
-};
+#include "ConstantBuffers.h"
 
 class LightedTextureMeshRenderer : public MeshRenderer
 {
@@ -17,7 +11,8 @@ public:
 	}
 	PhongData phongMaterialData;
 protected:
-	void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState) override;
+	void DrawDepthData(ID3D11DeviceContext* context, DepthShader* depthShader, ID3D11DepthStencilState* depthState) override;
+	virtual void DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState) override;
 	void UpdateConstantBuffers() override;
 	void InitBuffers(ID3D11Device* device) override;
 	virtual void UpdateLightBuffer();

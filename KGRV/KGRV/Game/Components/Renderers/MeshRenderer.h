@@ -14,9 +14,14 @@ public:
 		this->renderedMesh = renderedMesh;
 		this->drawShader = drawShader;
 	}
+
+	void UpdateDrawBuffersData();
+
 protected:
 	ID3D11Buffer* CreateDepthConstantBuffer(ID3D11Device* device);
 	
+
+
 	virtual void UpdateDrawMatrix();
 	virtual void InitBuffers(ID3D11Device* device);
 	virtual void UpdateConstantBuffers();

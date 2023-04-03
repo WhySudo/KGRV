@@ -31,6 +31,8 @@ int main()
 	shader.Initalize(game.renderView->device.Get());
 	texShader.Initalize(game.renderView->device.Get());
 	depthShader.Initalize(game.renderView->device.Get());
+	texLightedShader.Initalize(game.renderView->device.Get());
+	shadowShader.Initalize(game.renderView->device.Get());
 	Texture simpleTex;
 	Texture simpleTex2;
 	Texture colorTex;
@@ -57,7 +59,7 @@ int main()
 	//lightSource.transform->position = { 50.0f, 50.0f, 50.0f };
 	lightSource.transform->position = { 0.0f, 10.0f, 0.0f };
 	lightSource.transform->LookAt({ 0.0f, 0.0f, 0.0f });
-	SimpleShadowObject CentralPlanet = SimpleShadowObject(&game, &shadowShader, &planeColorTex);
+	SimpleShadowObject CentralPlanet = SimpleShadowObject(&game, &shadowShader, &planeColorTex, &texLightedShader);
 
 
 	KatamariBall movingBall = KatamariBall(&game, &shader);

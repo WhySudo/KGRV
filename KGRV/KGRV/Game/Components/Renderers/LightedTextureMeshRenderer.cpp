@@ -132,3 +132,18 @@ ID3D11Buffer* LightedTextureMeshRenderer::CreateMaterialBuffer(ID3D11Device* dev
 	return buffer;
 
 }
+void LightedTextureMeshRenderer::DrawDepthData(ID3D11DeviceContext* context, DepthShader* depthShader, ID3D11DepthStencilState* depthState)
+{
+	UINT strides[] = { sizeof(Vertex) };
+	UINT offsets[] = { 0 };
+	context->IASetInputLayout(depthShader->layout);
+	context->IASetPrimitiveTopology(renderedMesh->topology);
+	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	context->IASetVertexBuffers(0, 1, &vertexBuffer, strides, offsets);
+	context->VSSetShader(depthShader->vertexShader, nullptr, 0);
+	context->PSSetShader(depthShader->pixelShader, nullptr, 0);
+	context->VSSetConstantBuffers(0, 1, &depthBuffer);
+	context->PSSetConstantBuffers(0, 1, &depthBuffer);
+	context->OMSetDepthStencilState(depthState, 0);
+	context->DrawIndexed(renderedMesh->indecesCount, 0, 0);
+}

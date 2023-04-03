@@ -8,17 +8,19 @@ struct VS_IN
 struct PS_IN
 {
 	float4 pos : SV_POSITION;
-	float4 normal :NORMAL0;
-	float2 textureCoordinate : TEXCOORD; 
-	float4 lightPos : TEXCOORD2;
+	float4 lightViewPosition : TEXCOORD0;
+	float2 textureCoordinate : TEXCOORD1;
+	float4 normal :TEXCOORD2;
+	float4 worldPos :TEXCOORD3;
+
 };
 
 cbuffer TransformConstantBuffer : register(b0)
 {
-	float4x4 mat;
-	float4x4 normalMat;	
-	float4x4 worldViewProj;	
+	float4x4 world;
 	float4x4 cameraViewProj;
+	float4x4 normalMat;
+	float4x4 worldViewProj;
 };
 
 cbuffer LightConstantBuffer : register(b1)
@@ -26,7 +28,7 @@ cbuffer LightConstantBuffer : register(b1)
 	float4 cameraPosition;
 	float4 lightDirection;
 	float4 colorIntencity;
-	float4x4 lightMat;
+	float4x4 lightViewProj;
 };
 
 cbuffer MaterialConstantBuffer : register(b2)
@@ -48,43 +50,38 @@ float GetDepth(float4 pos) : SV_Target
 }
 
 
-float IsLighted(float4 lightViewPosition, float4 pos)
+float IsLighted(float4 lightViewPosition)
 {
-	float4 fragPosLightSpace = lightViewPosition;
-	// perform perspective divide
-	float3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-	// transform to [0,1] range
-	projCoords = projCoords * 0.5 + 0.5;
-	// get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-	//float closestDepth = depthTexture.Sample(objSamplerState, projCoords.xy).r;
-	float closestDepth = GetDepth(pos);
-	// get depth of current fragment from light's perspective
-	float currentDepth = fragPosLightSpace.z / fragPosLightSpace.w * 0.5 + 0.5;
+	float bias = 0.0005f;
+	float isVisibleForLight = 0;
+	float3 projectTexCoord;
 
-	return closestDepth;
+	projectTexCoord.x = lightViewPosition.x / lightViewPosition.w;
+	projectTexCoord.y = lightViewPosition.y / lightViewPosition.w;
+	projectTexCoord.z = lightViewPosition.z / lightViewPosition.w;
 
-	// check whether current frag pos is in shadow
-	float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+	projectTexCoord.x = projectTexCoord.x * 0.5 + 0.5f;
+	projectTexCoord.y = projectTexCoord.y * -0.5 + 0.5f;
 
-	return shadow;
-}
+	float max_depth = depthMapTexture.Sample(objSamplerState, projectTexCoord.xy).r;
 
+	return max_depth;
 
+	float currentDepth = (lightViewPosition.z / lightViewPosition.w);
 
-PS_IN VSMain(VS_IN input)
-{
-	PS_IN output = (PS_IN)0;
+	currentDepth = currentDepth - bias;
 
-	output.pos = mul(input.pos, mat);
-	//output.pos = input.pos;
-	//float4x4 normalMatrix = inverse(transpose(mat));
-	//output.normal = mul(float4(input.normal.xyz, 0), normalMat);
-	output.normal = mul(input.normal, normalMat);
-	//output.normal = input.normal;
-	output.textureCoordinate = input.textureCoordinate;
-	output.lightPos = mul(output.pos, lightMat);
+	if (max_depth >= currentDepth)
+	{
+		isVisibleForLight = 1;
+	}
+	else
+	{
+		isVisibleForLight = 0;
+	}
 
-	return output;
+	return isVisibleForLight;
+
 }
 
 float1 CalculateDiffuse(PS_IN input) {
@@ -95,7 +92,21 @@ float1 CalculateDiffuse(PS_IN input) {
 	return diffuse;
 }
 
-float3 GetLightning(PS_IN input) {
+float3 GetLightning(PS_IN input, float isLighted) {
+	float3 normal = normalize(input.normal.xyz);
+	float3 lightBackward = normalize(-lightDirection.xyz);
+	float3 lightForward = normalize(lightDirection.xyz);
+	float3 toCamera = normalize(cameraPosition.xyz - input.pos.xyz);
+	float3 lightReflect = normalize(reflect(lightForward, normal));
+	float3 diffuse = CalculateDiffuse(input);
+	float3 specular = specularAbsorptionCoef * pow(max(0.0, dot(-lightReflect, toCamera)), specularShininessCoef);
+	float3 lighting = colorIntencity * (diffuse + specular + ambientCoef);
+	//if (isLighted < 1) {
+	//	lighting = float3( 0, 0, 0 );
+	//}
+	return lighting;
+}
+float3 GetLightning_Ex(PS_IN input) {
 	float3 normal = normalize(input.normal.xyz);
 	float3 lightBackward = normalize(-lightDirection.xyz);
 	float3 lightForward = normalize(lightDirection.xyz);
@@ -107,19 +118,36 @@ float3 GetLightning(PS_IN input) {
 	return lighting;
 }
 
+PS_IN VSMain(VS_IN input)
+{
+
+	PS_IN output = (PS_IN)0;
+
+	output.pos = mul(input.pos, cameraViewProj);
+	//output.pos = input.pos;
+	output.worldPos = mul(input.pos, world);
+	output.lightViewPosition = mul(input.pos, lightViewProj);
+
+
+	//output.normal = mul(input.normal, inverse(transpose(world)));
+	input.normal.w = 0;
+
+	output.normal.w = 0;
+	output.normal = mul(input.normal, normalMat);
+	output.normal.w = 0;
+	//output.normal = float4(normalize(cross(ddx(input.pos), ddy(input.pos))),0);
+
+	output.textureCoordinate = input.textureCoordinate;
+	return output;
+
+}
+
+
 float4 PSMain(PS_IN input) : SV_Target
 {
-	//return float4(input.normal.xyz, 1.0f);
-
-
-	float4 setPixelColor = objTexture.Sample(objSamplerState, input.textureCoordinate);
-	float3 lighting = GetLightning(input);
-	float isLigthed = IsLighted(input.lightPos, input.pos);
-	if (isLigthed) {
-		return float4(lighting, 1) * setPixelColor;
-	}
-	else {
-		return float4(0, 0, 0, 1);
-	}
+	float4 pixelColor = objTexture.Sample(objSamplerState, input.textureCoordinate);
+	float isLigthed = IsLighted(input.lightViewPosition);
+	float3 lighting = GetLightning(input, isLigthed) * pixelColor;
+	return float4(isLigthed, isLigthed, isLigthed, 1);
 }
 
