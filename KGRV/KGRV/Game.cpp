@@ -58,13 +58,17 @@ int main()
 	lightSource.light->depthShader = &depthShader;
 
 	//lightSource.transform->position = { 50.0f, 50.0f, 50.0f };
-	lightSource.transform->position = { 0.0f, 20.0f, -20.0f };
-	lightSource.transform->rotation = { 3.14159 / 4, 0, 0 };
+	lightSource.transform->position = { 0, 20.0f, 20.0f };
+	lightSource.transform->rotation = { (3.14159 / 4) * (3), 0, 0};
 	//lightSource.transform->LookAt({ 0.0f, 0.0f, 0.0f });
 	SimpleShadowObject CentralPlanet = SimpleShadowObject(&game, &shadowShader, &planeColorTex, &texLightedShader);
 
-	
-	KatamariBall movingBall = KatamariBall(&game, &shader);
+	PhongData ballData;
+	ballData.ambient = 0.3f;
+	ballData.difuse = 0.8f;
+	ballData.specularAbsorption = 0.9f;
+	ballData.specularShininess = 1;
+	KatamariBall movingBall = KatamariBall(&game, ballData, &colorTex2, &texLightedShader);
 	SimpleKatamariObject testObj = SimpleKatamariObject(&game, &shader);
 	TexturedKatamariObject testObj2 = TexturedKatamariObject(&game, &texShader, "./Models/horse_fix.fbx", .5f, .01f, &simpleTex);
 	TexturedKatamariObject maxwellHorse = TexturedKatamariObject(&game, &texShader, "./Models/horse_fix.fbx", .5f, .01f, &simpleTex2);

@@ -11,8 +11,6 @@ struct PS_IN
 	float4 lightViewPosition : TEXCOORD0;
 	float2 textureCoordinate : TEXCOORD1;
 	float4 normal :TEXCOORD2;
-	float4 worldPos :TEXCOORD3;
-
 };
 
 cbuffer TransformConstantBuffer : register(b0)
@@ -39,49 +37,25 @@ cbuffer MaterialConstantBuffer : register(b2)
 	float specularShininessCoef;
 };
 
-Texture2D objTexture : TEXTURE: register(t0);
+Texture2D mainTexture : TEXTURE: register(t0);
 Texture2D depthMapTexture : TEXTURE: register(t1);
-SamplerState objSamplerState : SAMPLER: register(s0);
-
-float GetDepth(float4 pos) : SV_Target
-{ 
-	float depth = pos.z / pos.w;
-	return depth;
-}
-
+SamplerState samplerState : SAMPLER: register(s0);
 
 float IsLighted(float4 lightViewPosition)
 {
 	float bias = 0.0005f;
-	float isVisibleForLight = 0;
-	float3 projectTexCoord;
+	float3 depthTexUVPos;
 
-	projectTexCoord.x = lightViewPosition.x / lightViewPosition.w;
-	projectTexCoord.y = lightViewPosition.y / lightViewPosition.w;
-	projectTexCoord.z = lightViewPosition.z / lightViewPosition.w;
+	depthTexUVPos = lightViewPosition.xyz / lightViewPosition.w;
+	depthTexUVPos.x = depthTexUVPos.x * 0.5 + 0.5f;
+	depthTexUVPos.y = depthTexUVPos.y * -0.5 + 0.5f;
 
-	projectTexCoord.x = projectTexCoord.x * 0.5 + 0.5f;
-	projectTexCoord.y = projectTexCoord.y * -0.5 + 0.5f;
+	float maxLightedDepth = depthMapTexture.Sample(samplerState, depthTexUVPos.xy).r;
+	float currentDepth = (lightViewPosition.z / lightViewPosition.w) - bias;
 
-	float max_depth = depthMapTexture.Sample(objSamplerState, projectTexCoord.xy).r;
-
-//	float currentDepth = (lightViewPosition.z / lightViewPosition.w) ;
-	float currentDepth = lightViewPosition.z / lightViewPosition.w ;
-//	float currentDepth = (projectTexCoord.z * 0.5 + 0.5f) / lightViewPosition.w;
-	//return currentDepth;
-	//return currentDepth;
-	currentDepth = currentDepth - bias;
-
-	if (max_depth > currentDepth)
-	{
-		isVisibleForLight = 1;
-	}
-	else
-	{
-		isVisibleForLight = 0;
-	}
-
-	return isVisibleForLight;
+	float isLighted = ((maxLightedDepth > currentDepth) ? 1 : 0);
+	
+	return isLighted;
 
 }
 
@@ -93,52 +67,39 @@ float1 CalculateDiffuse(PS_IN input) {
 	return diffuse;
 }
 
-float3 GetLightning(PS_IN input, float isLighted) {
+float3 CalculateSpecular(PS_IN input) {
 	float3 normal = normalize(input.normal.xyz);
-	float3 lightBackward = normalize(-lightDirection.xyz);
-	float3 lightForward = normalize(lightDirection.xyz);
 	float3 toCamera = normalize(cameraPosition.xyz - input.pos.xyz);
+	float3 lightForward = normalize(lightDirection.xyz);
 	float3 lightReflect = normalize(reflect(lightForward, normal));
-	float3 diffuse = CalculateDiffuse(input);
 	float3 specular = specularAbsorptionCoef * pow(max(0.0, dot(-lightReflect, toCamera)), specularShininessCoef);
+	return specular;
+}
 
+float3 GetLightningWithShadow(PS_IN input, float isLighted) {
+
+	float3 diffuse = CalculateDiffuse(input);
+	float3 specular = CalculateSpecular(input);
 	float3 lighting = (colorIntencity * isLighted * (diffuse + specular) + ambientCoef);
-//	float3 lighting = colorIntencity * (diffuse + specular + ambientCoef);
-//	if (isLighted < 1) {
-//		lighting = float3( 0, 0, 0 );
-//	}
 	return lighting;
 }
-float3 GetLightning_Ex(PS_IN input) {
-	float3 normal = normalize(input.normal.xyz);
-	float3 lightBackward = normalize(-lightDirection.xyz);
-	float3 lightForward = normalize(lightDirection.xyz);
-	float3 toCamera = normalize(cameraPosition.xyz - input.pos.xyz);
-	float3 lightReflect = normalize(reflect(lightForward, normal));
+float3 GetLightning_Legacy(PS_IN input) {
 	float3 diffuse = CalculateDiffuse(input);
-	float3 specular = specularAbsorptionCoef * pow(max(0.0, dot(-lightReflect, toCamera)), specularShininessCoef);
+	float3 specular = CalculateSpecular(input);
 	float3 lighting = colorIntencity * (diffuse + specular + ambientCoef);
 	return lighting;
 }
 
 PS_IN VSMain(VS_IN input)
 {
-
 	PS_IN output = (PS_IN)0;
-
 	output.pos = mul(input.pos, worldViewProj);
-	//output.pos = input.pos;
-	output.worldPos = mul(input.pos, world);
 	output.lightViewPosition = mul(input.pos, lightViewProj);
-
-
-	//output.normal = mul(input.normal, inverse(transpose(world)));
 	input.normal.w = 0;
 
 	output.normal.w = 0;
 	output.normal = mul(input.normal, normalMat);
 	output.normal.w = 0;
-	//output.normal = float4(normalize(cross(ddx(input.pos), ddy(input.pos))),0);
 
 	output.textureCoordinate = input.textureCoordinate;
 	return output;
@@ -148,12 +109,9 @@ PS_IN VSMain(VS_IN input)
 
 float4 PSMain(PS_IN input) : SV_Target
 {
-	float4 pixelColor = objTexture.Sample(objSamplerState, input.textureCoordinate);
+	float4 pixelColor = mainTexture.Sample(samplerState, input.textureCoordinate);
 	float isLigthed = IsLighted(input.lightViewPosition);
-	float3 lighting = GetLightning(input, isLigthed) * pixelColor;
-
-	//return float4(isLigthed, isLigthed, isLigthed, 1);
-	//float3 lighting = GetLightning_Ex(input) * pixelColor;
+	float3 lighting = GetLightningWithShadow(input, isLigthed) * pixelColor;
 	return float4(lighting, 1);
 }
 

@@ -22,8 +22,8 @@ public:
 //		gameComponents.push_back(rendererComponent2);
 		rendererComponent->phongMaterialData.ambient = 0.3f;
 		rendererComponent->phongMaterialData.difuse = 0.1;
-		rendererComponent->phongMaterialData.specularAbsorption = 0.8f;
-		rendererComponent->phongMaterialData.specularShininess = 10;
+		rendererComponent->phongMaterialData.specularAbsorption = 1.0f;
+		rendererComponent->phongMaterialData.specularShininess = 0;
 	}
 	~SimpleShadowObject() {
 		delete cubeMesh;
