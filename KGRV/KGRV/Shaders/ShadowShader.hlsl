@@ -16,7 +16,6 @@ struct PS_IN
 cbuffer TransformConstantBuffer : register(b0)
 {
 	float4x4 world;
-	float4x4 cameraViewProj;
 	float4x4 normalMat;
 	float4x4 worldViewProj;
 };

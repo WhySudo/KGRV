@@ -114,10 +114,6 @@ void ShadowMeshRenderer::UpdateDrawMatrix()
 	data.worldViewProj = modelMatrix * camera->ViewMatrix() * camera->ProjectionMatrix();
 	data.worldViewProj = DirectX::XMMatrixTranspose(data.worldViewProj);
 
-	data.cameraViewProj = camera->ViewMatrix() * camera->ProjectionMatrix();
-	data.cameraViewProj = DirectX::XMMatrixTranspose(data.cameraViewProj);
-
-
 	data.normalMatrix = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr, modelMatrix));
 	data.normalMatrix *= camera->ViewMatrix() * camera->ProjectionMatrix();
 
@@ -130,9 +126,6 @@ void ShadowMeshRenderer::UpdateDrawMatrix()
 	HRESULT result = gameObject->gameHandle->renderView->context->Map(transformBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &transformMappedBufferData);
 	CopyMemory(transformMappedBufferData.pData, &data, sizeof(TransformConstantBufferEx));
 	gameObject->gameHandle->renderView->context->Unmap(transformBuffer, 0);
-	//lightData.lightMatrix = modelToWorld * lightCamera->GetViewMatrix() * lightCamera->GetProjectionMatrix();
-	//lightData.lightMatrix = lightMAt;
-	//lightData.lightMatrix = DirectX::XMMatrixTranspose(lightData.lightMatrix);
 
 }
 
