@@ -50,14 +50,15 @@ int main()
 	BaseCameraObject camera = BaseCameraObject(&game);
 	DirectionLightObject lightSource = DirectionLightObject(&game);
 
-	//float aspect = lightSource.light->depthResolution.x / lightSource.light->depthResolution.y;
-	//float zoom = 30;
+	float aspect = 1;
+	float zoom = 20;
+	lightSource.light->SetOrthographicProjectionValues(aspect * zoom, aspect * zoom, 0.001, 1000);
 	
-	//lightSource.light->SetOrthographicProjectionValues(aspect * zoom, aspect * zoom, 0.001, 1000);
+	//camera.GetCamera()->SetOrthographicProjectionValues(aspect * zoom, aspect * zoom, 0.001, 1000);
 	lightSource.light->depthShader = &depthShader;
 
 	//lightSource.transform->position = { 50.0f, 50.0f, 50.0f };
-	lightSource.transform->position = { 0.0f, 10.0f, -10.0f };
+	lightSource.transform->position = { 0.0f, 20.0f, -20.0f };
 	lightSource.transform->rotation = { 3.14159 / 4, 0, 0 };
 	//lightSource.transform->LookAt({ 0.0f, 0.0f, 0.0f });
 	SimpleShadowObject CentralPlanet = SimpleShadowObject(&game, &shadowShader, &planeColorTex, &texLightedShader);
@@ -134,12 +135,17 @@ int main()
 	camera.GetCamera()->LookAt(LookAt);
 	game.loadedScene->AddObject(&camera);
 	game.loadedScene->AddObject(&lightSource);
-
+	zoom = 20;
+	//camera.GetCamera()->SetOrthographicProjectionValues(aspect * zoom, aspect * zoom, 0.001, 1000);
 
 	game.loadedScene->AddObject(&CentralPlanet);
 
 	//SimpleLightedTexturedCube drawDepth = SimpleLightedTexturedCube(&game, &texLightedShader, &simpleTex);// lightSource.light->tex);
-	SimpleLightedTexturedCube drawDepth = SimpleLightedTexturedCube(&game, &texLightedShader, lightSource.light->tex);
+	Texture renderTex = Texture();
+	renderTex.Initialize(game.renderView->device.Get());
+	renderTex.texture = lightSource.light->tex->texture;
+	renderTex.textureResourceView = lightSource.light->tex->textureResourceView;
+	SimpleLightedTexturedCube drawDepth = SimpleLightedTexturedCube(&game, &texLightedShader, &renderTex);
 
 	drawDepth.transform->position = { 0.0, 1.0, 30.f };
 	drawDepth.transform->scale = { 20.0, 20.0, 1.0f };

@@ -23,10 +23,10 @@ public:
 		vertex.push_back(Vertex({ -0.5, 0.5, -0.5 }, { 0.0f, 0.0f }, {0.0f, 0.0f, -1.0f })); //3 //3
 
 		//Face Top
-		vertex.push_back(Vertex({ 0.5, 0.5, -0.5 }, { 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f})); //2 //4
-		vertex.push_back(Vertex({ -0.5, 0.5, -0.5 }, { 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f })); //3 //5
-		vertex.push_back(Vertex({ -0.5, 0.5, 0.5 }, { 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f })); //4 //6
-		vertex.push_back(Vertex({ 0.5, 0.5, 0.5 }, { 1.0f, 1.0f }, { 0.0f, 1.0f, 0.0f })); //5 //7
+		vertex.push_back(Vertex({ 0.5, 0.5, -0.5 }, { 1.0f, 1.0f }, {0.0f, 1.0f, 0.0f})); //2 //4
+		vertex.push_back(Vertex({ -0.5, 0.5, -0.5 }, { 0.0f, 1.0f }, { 0.0f, 1.0f, 0.0f })); //3 //5
+		vertex.push_back(Vertex({ -0.5, 0.5, 0.5 }, { 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f })); //4 //6
+		vertex.push_back(Vertex({ 0.5, 0.5, 0.5 }, { 1.0f, 0.0f }, { 0.0f, 1.0f, 0.0f })); //5 //7
 
 		//Face Right
 		vertex.push_back(Vertex({ 0.5, -0.5, -0.5 }, { 0.0f, 0.0f }, {1.0f, 0.0f, 0.0f})); //1 //8

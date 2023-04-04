@@ -7,7 +7,7 @@ void Light::BeforeDraw()
 	context->OMSetRenderTargets(1, &lightDepthBufferRenderTargetView, depthStencilView.Get());
 	//context->OMSetRenderTargets(1, &gameObject->gameHandle->renderView->renderTargetView, gameObject->gameHandle->renderView->depthStencilView.Get());
 
-	float bgcolor[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+	float bgcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	context->ClearRenderTargetView(lightDepthBufferRenderTargetView, bgcolor);
 	context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -34,7 +34,7 @@ void Light::DrawDepthMapForObject(GameObject* object)
 
 bool Light::Initialization()
 {
-	CameraComponent::Initialization();
+	//CameraComponent::Initialization();
 	InitializeDepthTexture();
 	return false;
 }

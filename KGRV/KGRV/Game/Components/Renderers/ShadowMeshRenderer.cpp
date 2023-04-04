@@ -165,7 +165,7 @@ void ShadowMeshRenderer::UpdateLightBuffer()
 
 
 		lightData.colorIntencity = (Vector4)lightInstance->ColorIntencity();
-
+		lightInstance->Update(0);
 		lightData.lightMatrix = modelMatrix * lightInstance->ViewMatrix() * lightInstance->ProjectionMatrix();
 		lightData.lightMatrix = DirectX::XMMatrixTranspose(lightData.lightMatrix);
 

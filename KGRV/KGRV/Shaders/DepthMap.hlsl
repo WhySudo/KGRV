@@ -32,7 +32,7 @@ float4 PSMain(PS_IN input) : SV_Target
 {
 	//return float4(0, 1, 0, 1);
 	//float depth = input.pos.w / 100;
-	float depth = input.pos.z / input.pos.w * 5;
+	float depth = input.pos.z / input.pos.w;
 	return float4(depth, depth, depth, 1);
 }
 
