@@ -17,10 +17,10 @@ public:
 		vertex.push_back(Vertex({-0.5, -0.5, 0.5 }, {0.0f, 0.0f})); //7
 		*/
 		//Face Front
-		vertex.push_back(Vertex({ -0.5, -0.5, -0.5 }, { 0.0f, 0.0f }, {0.0f, 0.0f, -1.0f})); //0 //0
-		vertex.push_back(Vertex({ 0.5, -0.5, -0.5 }, { 1.0f, 0.0f }, {0.0f, 0.0f, -1.0f })); //1 //1
-		vertex.push_back(Vertex({ 0.5, 0.5, -0.5 }, { 1.0f, 1.0f }, {0.0f, 0.0f, -1.0f })); //2 //2
-		vertex.push_back(Vertex({ -0.5, 0.5, -0.5 }, { 0.0f, 1.0f }, {0.0f, 0.0f, -1.0f })); //3 //3
+		vertex.push_back(Vertex({ -0.5, -0.5, -0.5 }, { 0.0f, 1.0f }, {0.0f, 0.0f, -1.0f})); //0 //0
+		vertex.push_back(Vertex({ 0.5, -0.5, -0.5 }, { 1.0f, 1.0f }, {0.0f, 0.0f, -1.0f })); //1 //1
+		vertex.push_back(Vertex({ 0.5, 0.5, -0.5 }, { 1.0f, 0.0f }, {0.0f, 0.0f, -1.0f })); //2 //2
+		vertex.push_back(Vertex({ -0.5, 0.5, -0.5 }, { 0.0f, 0.0f }, {0.0f, 0.0f, -1.0f })); //3 //3
 
 		//Face Top
 		vertex.push_back(Vertex({ 0.5, 0.5, -0.5 }, { 1.0f, 0.0f }, {0.0f, 1.0f, 0.0f})); //2 //4

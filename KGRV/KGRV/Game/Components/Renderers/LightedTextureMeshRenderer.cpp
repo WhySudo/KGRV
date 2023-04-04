@@ -2,6 +2,7 @@
 #include "ConstantBuffers.h"
 #include "../Light/Light.h"
 #include "../CameraComponent.h"
+#include <iostream>
 void LightedTextureMeshRenderer::DrawObject(ID3D11DeviceContext* context, ID3D11RenderTargetView* targetView, ID3D11DepthStencilState* depthState)
 {
 

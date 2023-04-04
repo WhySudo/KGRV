@@ -8,13 +8,19 @@ class Light: public CameraComponent
 public:
 	Light(GameObject* obj, DepthShader* shader = nullptr) : CameraComponent(obj) {
 		depthShader = shader;
+
+	//	tex->samplerState = obj->gameHandle->renderView->
 	}
 
+
+	~Light() {
+		delete tex;
+	}
 	void BeforeDraw() override;
 
-
+	Texture* tex;
 	float inencity = 1.0f;
-	Vector2 depthResolution = { 900.0f,  900.0f };
+	Vector2 depthResolution = { 800,  800 };
 	XMFLOAT3 lightColor = { 1.0f, 1.0f, 1.0f };
 	Vector3 ColorIntencity() {
 		return lightColor * inencity;
@@ -27,7 +33,6 @@ public:
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> depthStencilView;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> depthStencilBuffer;
 
-	virtual void Update(float deltaTime) override;
 	virtual bool Initialization() override;
 	void InitializeDepthTexture();
 protected:

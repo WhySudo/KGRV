@@ -1,11 +1,13 @@
 #include "Light.h"
 #include "../Renderers/MeshRenderer.h"
+#include <iostream>
 void Light::BeforeDraw()
 {
 	auto context = gameObject->gameHandle->renderView->context;
 	context->OMSetRenderTargets(1, &lightDepthBufferRenderTargetView, depthStencilView.Get());
+	//context->OMSetRenderTargets(1, &gameObject->gameHandle->renderView->renderTargetView, gameObject->gameHandle->renderView->depthStencilView.Get());
 
-	float bgcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float bgcolor[] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	context->ClearRenderTargetView(lightDepthBufferRenderTargetView, bgcolor);
 	context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -21,6 +23,7 @@ void Light::DrawDepthMapForObject(GameObject* object)
 	for (auto component : object->gameComponents) {
 		auto renderComponent = dynamic_cast<MeshRenderer*>(component);
 		if (renderComponent == nullptr) continue;
+
 		renderComponent->DrawDepthData(gameObject->gameHandle->renderView->context, depthShader, depthStencilState);
 		break;
 	}
@@ -28,9 +31,6 @@ void Light::DrawDepthMapForObject(GameObject* object)
 
 }
 
-void Light::Update(float deltaTime)
-{
-}
 
 bool Light::Initialization()
 {
@@ -46,8 +46,8 @@ void Light::InitializeDepthTexture() {
 	ZeroMemory(&textureDesc, sizeof(textureDesc));
 	auto gameHandle = gameObject->gameHandle;
 	auto device = gameHandle->renderView->device;
-	textureDesc.Width = gameHandle->gameWindow->width;
-	textureDesc.Height = gameHandle->gameWindow->height;
+	textureDesc.Width = static_cast<float>(depthResolution.x);
+	textureDesc.Height = static_cast<float>(depthResolution.y);
 	textureDesc.MipLevels = 1;
 	textureDesc.ArraySize = 1;
 	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -113,6 +113,10 @@ void Light::InitializeDepthTexture() {
 	{
 		std::cout << "error initalizing depth stencil state" << std::endl;
 	}
+	tex = new Texture();
+	tex->Initialize(gameObject->gameHandle->renderView->device.Get());
+	tex->textureResourceView = textureResourceView;
+	tex->texture = lightDepthBufferTexture;
 }
 
 

@@ -14,10 +14,7 @@ struct PS_IN
 
 cbuffer TransformConstantBuffer : register(b0)
 {
-	float4x4 mat;
-	float4x4 normalMat;
 	float4x4 worldViewProj;
-	float4x4 cameraViewProj;
 };
 
 
@@ -33,8 +30,9 @@ PS_IN VSMain(VS_IN input)
 
 float4 PSMain(PS_IN input) : SV_Target
 {
+	//return float4(0, 1, 0, 1);
 	//float depth = input.pos.w / 100;
-	float depth = input.pos.z / input.pos.w;
+	float depth = input.pos.z / input.pos.w * 5;
 	return float4(depth, depth, depth, 1);
 }
 

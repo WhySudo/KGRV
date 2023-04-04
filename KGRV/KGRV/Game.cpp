@@ -50,18 +50,19 @@ int main()
 	BaseCameraObject camera = BaseCameraObject(&game);
 	DirectionLightObject lightSource = DirectionLightObject(&game);
 
-	float aspect = game.gameWindow->width / game.gameWindow->height;
-	float zoom = 20;
+	//float aspect = lightSource.light->depthResolution.x / lightSource.light->depthResolution.y;
+	//float zoom = 30;
 	
-	lightSource.light->SetOrthographicProjectionValues(aspect * zoom, aspect * zoom, 0.001, 1000);
+	//lightSource.light->SetOrthographicProjectionValues(aspect * zoom, aspect * zoom, 0.001, 1000);
 	lightSource.light->depthShader = &depthShader;
 
 	//lightSource.transform->position = { 50.0f, 50.0f, 50.0f };
-	lightSource.transform->position = { 0.0f, 10.0f, 0.0f };
-	lightSource.transform->LookAt({ 0.0f, 0.0f, 0.0f });
+	lightSource.transform->position = { 0.0f, 10.0f, -10.0f };
+	lightSource.transform->rotation = { 3.14159 / 4, 0, 0 };
+	//lightSource.transform->LookAt({ 0.0f, 0.0f, 0.0f });
 	SimpleShadowObject CentralPlanet = SimpleShadowObject(&game, &shadowShader, &planeColorTex, &texLightedShader);
 
-
+	
 	KatamariBall movingBall = KatamariBall(&game, &shader);
 	SimpleKatamariObject testObj = SimpleKatamariObject(&game, &shader);
 	TexturedKatamariObject testObj2 = TexturedKatamariObject(&game, &texShader, "./Models/horse_fix.fbx", .5f, .01f, &simpleTex);
@@ -95,13 +96,17 @@ int main()
 	lightMaxwell.rendererComponent->phongMaterialData.specularAbsorption = 0.9;
 	lightMaxwell.rendererComponent->phongMaterialData.specularShininess = 28;
 
-	CentralPlanet.transform->scale = { 20.0f, 1.0f, 20.0f };
+	CentralPlanet.transform->scale = { 20.0f, 20.0f, 20.0f };
+	CentralPlanet.transform->position = { 0.0f, -10.0f, 0.0f };
 	movingBall.transform->position = { 0.0f ,1.0f, 0.0f };
 
 
-	camera.transform->position.y = 3;
+	camera.transform->position.y = 10;
 	camera.transform->position.x = 0;
-	camera.transform->position.z = -1;
+	camera.transform->position.z = -10;
+
+	camera.transform->rotation = { 3.14159 / 4, 0, 0 };
+
 
 	testObj.transform->position = { 10.0f, 1.5f, 3.0f };
 	testObj2.transform->position = { -10.0f, 0.5f, -3.0f };
@@ -129,7 +134,17 @@ int main()
 	camera.GetCamera()->LookAt(LookAt);
 	game.loadedScene->AddObject(&camera);
 	game.loadedScene->AddObject(&lightSource);
+
+
 	game.loadedScene->AddObject(&CentralPlanet);
+
+	//SimpleLightedTexturedCube drawDepth = SimpleLightedTexturedCube(&game, &texLightedShader, &simpleTex);// lightSource.light->tex);
+	SimpleLightedTexturedCube drawDepth = SimpleLightedTexturedCube(&game, &texLightedShader, lightSource.light->tex);
+
+	drawDepth.transform->position = { 0.0, 1.0, 30.f };
+	drawDepth.transform->scale = { 20.0, 20.0, 1.0f };
+	//drawDepth.transform->rotation = { 0, 0, 3.14159 };
+	game.loadedScene->AddObject(&drawDepth);
 	game.loadedScene->AddObject(&movingBall);
 	game.loadedScene->AddObject(movingBall.view);
 	//game.loadedScene->AddObject(movingBall.view1);

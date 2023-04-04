@@ -107,9 +107,7 @@ HRESULT RenderView::Initalize(){
 }
 
 void RenderView::UpdateComponentView() {
-	for (auto object : game->loadedScene->SceneObjects) {
-		object->BeforeDraw();
-	}
+	
 	context->ClearState();
 	context->RSSetState(rastState);
 	D3D11_VIEWPORT viewport = {};
@@ -122,6 +120,9 @@ void RenderView::UpdateComponentView() {
 	float color[] = {1.0f, 0.1f, 0.1f, 1.0f };
 	float bgcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	context->RSSetViewports(1, &viewport);
+	for (auto object : game->loadedScene->SceneObjects) {
+		object->BeforeDraw();
+	}
 	context->OMSetRenderTargets(1, &renderTargetView, depthStencilView.Get());
 	context->ClearRenderTargetView(renderTargetView, bgcolor);
 	context->ClearDepthStencilView(depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);

@@ -66,9 +66,8 @@ float IsLighted(float4 lightViewPosition)
 	float max_depth = depthMapTexture.Sample(objSamplerState, projectTexCoord.xy).r;
 
 	return max_depth;
-
 	float currentDepth = (lightViewPosition.z / lightViewPosition.w);
-
+	return currentDepth;
 	currentDepth = currentDepth - bias;
 
 	if (max_depth >= currentDepth)
@@ -101,9 +100,9 @@ float3 GetLightning(PS_IN input, float isLighted) {
 	float3 diffuse = CalculateDiffuse(input);
 	float3 specular = specularAbsorptionCoef * pow(max(0.0, dot(-lightReflect, toCamera)), specularShininessCoef);
 	float3 lighting = colorIntencity * (diffuse + specular + ambientCoef);
-	//if (isLighted < 1) {
-	//	lighting = float3( 0, 0, 0 );
-	//}
+	if (isLighted < 1) {
+		lighting = float3( 0, 0, 0 );
+	}
 	return lighting;
 }
 float3 GetLightning_Ex(PS_IN input) {
@@ -123,7 +122,7 @@ PS_IN VSMain(VS_IN input)
 
 	PS_IN output = (PS_IN)0;
 
-	output.pos = mul(input.pos, cameraViewProj);
+	output.pos = mul(input.pos, worldViewProj);
 	//output.pos = input.pos;
 	output.worldPos = mul(input.pos, world);
 	output.lightViewPosition = mul(input.pos, lightViewProj);
@@ -147,7 +146,10 @@ float4 PSMain(PS_IN input) : SV_Target
 {
 	float4 pixelColor = objTexture.Sample(objSamplerState, input.textureCoordinate);
 	float isLigthed = IsLighted(input.lightViewPosition);
-	float3 lighting = GetLightning(input, isLigthed) * pixelColor;
+	//float3 lighting = GetLightning(input, isLigthed) * pixelColor;
+
 	return float4(isLigthed, isLigthed, isLigthed, 1);
+	//float3 lighting = GetLightning_Ex(input) * pixelColor;
+	//return float4(lighting, 1);
 }
 

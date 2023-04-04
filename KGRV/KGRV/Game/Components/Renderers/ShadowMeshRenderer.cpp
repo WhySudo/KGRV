@@ -140,11 +140,15 @@ void ShadowMeshRenderer::UpdateLightBuffer()
 {
 
 	auto lightInstance = gameObject->gameHandle->loadedScene->light;
+	lightInstance->Update(0);
 	auto cameraInstance = gameObject->gameHandle->loadedScene->currentCamera;
 	DirectX::XMMATRIX modelMatrix = gameObject->transform->LocalToGlobalMatrix();
 	LightConstantBufferEx lightData = {};
 	if (lightInstance != nullptr)
 	{
+
+
+
 		auto lightTransform = lightInstance->gameObject->transform;
 		auto lightMatrix = lightTransform->LocalToGlobalRotationMatrix();// *cameraInstance->ViewMatrix()* cameraInstance->ProjectionMatrix();
 		

@@ -13,9 +13,9 @@ struct PhongData {
 };
 struct TransformConstantBufferEx {
 	DirectX::XMMATRIX matrix;
-	DirectX::XMMATRIX worldViewProj;
-	DirectX::XMMATRIX normalMatrix;
 	DirectX::XMMATRIX cameraViewProj;
+	DirectX::XMMATRIX normalMatrix;
+	DirectX::XMMATRIX worldViewProj;
 };
 
 struct DepthConstantBuffer {
